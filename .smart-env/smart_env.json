@@ -5,35 +5,21 @@
     "min_chars": 200
   },
   "smart_sources": {
-    "single_file_data_path": ".smart-env/smart_sources.json",
     "min_chars": 200,
     "embed_model": {
       "adapter": "transformers",
       "transformers": {
-        "legacy_transformers": false,
-        "model_key": "TaylorAI/bge-micro-v2"
+        "model_key": "TaylorAI/bge-micro-v2",
+        "legacy_transformers": false
       },
       "TaylorAI/bge-micro-v2": {}
-    }
+    },
+    "excluded_headings": "",
+    "file_exclusions": "Untitled",
+    "folder_exclusions": "00_templates,02_view",
+    "single_file_data_path": ".smart-env/smart_sources.json"
   },
-  "ribbon_icons": {
-    "connections": false,
-    "random_note": false
-  },
-  "file_exclusions": "Untitled",
-  "folder_exclusions": "00_templates,02_view",
-  "smart_view_filter": {
-    "render_markdown": true,
-    "show_full_path": false,
-    "exclude_blocks_from_source_connections": true,
-    "exclude_frontmatter_blocks": true,
-    "expanded_view": false,
-    "results_limit": "20",
-    "exclude_outlinks": true
-  },
-  "excluded_headings": "",
   "language": "en",
-  "new_user": true,
   "re_import_wait_time": 13,
   "smart_chat_threads": {
     "chat_model": {
@@ -54,5 +40,55 @@
   "smart_notices": {
     "muted": {}
   },
-  "version": ""
+  "smart_view_filter": {
+    "expanded_view": false,
+    "render_markdown": true,
+    "show_full_path": false,
+    "exclude_blocks_from_source_connections": true,
+    "exclude_frontmatter_blocks": true,
+    "results_limit": "20",
+    "exclude_outlinks": true
+  },
+  "version": "",
+  "new_user": true,
+  "models": {
+    "embedding_platform": "transformers",
+    "chat_completion_platform": "open_router"
+  },
+  "ribbon_icons": {
+    "connections": false,
+    "random_note": false
+  },
+  "connections_lists": {
+    "results_collection_key": "smart_sources",
+    "score_algo_key": "similarity",
+    "connections_post_process": "none",
+    "results_limit": 20,
+    "exclude_frontmatter_blocks": true,
+    "connections_list_item_component_key": "connections_list_item_v3",
+    "components": {
+      "connections_list_item_v3": {
+        "render_markdown": true,
+        "show_full_path": false
+      }
+    }
+  },
+  "context_items": {
+    "template_preset": "xml_structured",
+    "template_before": "<item loc=\"{{KEY}}\" at=\"{{TIME_AGO}}\">",
+    "template_after": "</item>"
+  },
+  "smart_contexts": {
+    "template_preset": "xml_structured",
+    "template_before": "<context>\n{{FILE_TREE}}",
+    "template_after": "</context>"
+  },
+  "lookup_lists": {
+    "results_collection_key": "smart_blocks",
+    "score_algo_key": "similarity",
+    "results_limit": 20
+  },
+  "embedding_models": {
+    "default_model_key": "transformers#1769079825851"
+  }
 }

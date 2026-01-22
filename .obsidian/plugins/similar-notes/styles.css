@@ -1,0 +1,336 @@
+/* Similar Notes container style */
+
+.embedded-similar-notes {
+    border-top: 1px solid var(--background-modifier-border);
+}
+
+.embedded-similar-notes .nav-header {
+    padding: var(--size-4-3) 0 0 0;
+}
+
+.similar-notes-pane {
+    margin-bottom: 12px;
+}
+
+.similar-notes-pane .tree-item-self {
+    font-size: max(var(--font-ui-small), var(--font-smaller));
+    align-items: center;
+}
+
+.similar-notes-pane > .tree-item-self {
+    font-size: max(var(--font-ui-small), 1em);
+    width: fit-content;
+    color: var(--nav-heading-color);
+    padding-inline-start: var(--size-4-2);
+}
+
+.similar-notes-pane .search-result-container {
+    padding: var(--size-4-1) 1px var(--size-4-1);
+}
+
+.similar-notes-title {
+    display: flex;
+    align-items: center;
+    color: var(--nav-heading-color);
+    font-weight: var(--nav-heading-weight);
+    font-size: max(var(--font-ui-small), 1em);
+}
+
+.similar-notes-title.is-collapsed {
+    color: var(--nav-heading-color-collapsed);
+}
+
+/* Empty state message */
+.similar-notes-pane .search-empty-state {
+    font-size: max(var(--font-ui-small), var(--font-smaller));
+}
+
+/* Note title/path display with truncation */
+.similar-notes-pane .tree-item-inner {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0; /* Allow flexbox to shrink below content size */
+}
+
+/* Animation transition for search result previews */
+.search-result-file-matches {
+    max-height: 1000px; /* 충분히 큰 값으로 설정 */
+    transition: max-height 200ms cubic-bezier(0.02, 0.01, 0.47, 1);
+    overflow: hidden;
+}
+
+.search-result-file-matches.is-collapsed {
+    max-height: 0;
+}
+
+/* For Minimal theme */
+.markdown-source-view.mod-cm6.is-readable-line-width
+    .cm-sizer
+    > .embedded-similar-notes {
+    max-width: var(--max-width);
+    width: var(--line-width);
+    margin-inline: var(--content-margin) !important;
+}
+
+/* RegExp Tester Styling */
+.similar-notes-regexp-tester {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.similar-notes-regexp-tester-content {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Error highlighting for invalid RegExp patterns */
+.similar-notes-regexp-error {
+    border: 2px solid var(--color-red) !important;
+    background-color: rgba(255, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+    .similar-notes-regexp-tester-content {
+        flex-direction: column;
+    }
+}
+
+.similar-notes-test-input-container,
+.similar-notes-test-output-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.similar-notes-test-label {
+    font-size: var(--font-ui-small);
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.similar-notes-test-input-container textarea,
+.similar-notes-test-output-container textarea {
+    resize: vertical;
+    min-height: 8rem;
+    width: 100%;
+    font-family: var(--font-monospace);
+    font-size: var(--font-ui-small);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    padding: 0.5rem;
+    background-color: var(--background-primary);
+}
+
+.similar-notes-test-output-container textarea {
+    background-color: var(--background-secondary);
+}
+
+/* Folder exclusion tester styles */
+.similar-notes-folder-tester {
+    margin-top: 0.5rem;
+}
+
+.similar-notes-folder-tester-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.similar-notes-test-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.similar-notes-test-label {
+    font-size: var(--font-ui-small);
+    color: var(--text-muted);
+}
+
+.similar-notes-test-input {
+    flex: 1;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    background-color: var(--background-primary);
+    font-size: var(--font-ui-small);
+}
+
+.similar-notes-test-result {
+    font-size: var(--font-ui-small);
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    min-width: 8rem;
+    text-align: center;
+}
+
+.similar-notes-test-match {
+    color: var(--text-success);
+    background-color: var(--background-success);
+}
+
+.similar-notes-test-no-match {
+    color: var(--text-muted);
+}
+
+.similar-notes-test-error {
+    color: var(--text-error);
+    background-color: var(--background-error);
+}
+
+/* Excluded files list styles */
+
+.similar-notes-excluded-files-list {
+    height: 120px;
+    min-height: 60px;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    background-color: var(--background-secondary);
+    padding: 0.5rem;
+    font-size: var(--font-ui-small);
+    width: 90%;
+    max-width: 600px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.similar-notes-excluded-file-item {
+    padding: 0.25rem 0;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    text-align: left;
+}
+
+.similar-notes-excluded-file-item:hover {
+    color: var(--text-normal);
+}
+
+.similar-notes-excluded-empty {
+    color: var(--text-faint);
+    font-style: italic;
+    text-align: left;
+    padding: 1rem;
+}
+
+/* Semantic Search Modal Styles */
+/* Uses Obsidian's native .prompt class for base styling */
+
+/* Wrapper div for React event handling - should not affect layout */
+.semantic-search-modal .semantic-search-wrapper {
+    display: contents;
+}
+
+/* Spinner for loading state */
+.semantic-search-modal .semantic-search-spinner {
+    position: absolute;
+    right: var(--size-4-3);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--background-modifier-border);
+    border-top-color: var(--text-accent);
+    border-radius: 50%;
+    animation: semantic-search-spin 0.8s linear infinite;
+}
+
+@keyframes semantic-search-spin {
+    from {
+        transform: translateY(-50%) rotate(0deg);
+    }
+    to {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}
+
+/* Warning message for token limit */
+.semantic-search-modal .semantic-search-warning {
+    padding: var(--size-4-2) var(--size-4-3);
+    font-size: var(--font-ui-smaller);
+    color: var(--text-warning);
+    background-color: var(--background-modifier-message);
+}
+
+/* Empty state message */
+.semantic-search-modal .prompt-empty-state {
+    padding: var(--size-4-4);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: var(--font-ui-small);
+}
+
+/* Search result items */
+.semantic-search-modal .suggestion-item {
+    display: flex;
+    align-items: flex-start;
+    padding: var(--size-4-2) var(--size-4-3);
+    cursor: pointer;
+}
+
+.semantic-search-modal .suggestion-item:hover,
+.semantic-search-modal .suggestion-item.is-selected {
+    background-color: var(--background-modifier-hover);
+}
+
+.semantic-search-modal .suggestion-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.semantic-search-modal .suggestion-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.semantic-search-modal .suggestion-aux {
+    display: flex;
+    align-items: center;
+    margin-left: var(--size-4-2);
+}
+
+.semantic-search-modal .semantic-search-score {
+    font-size: var(--font-ui-smaller);
+    color: var(--text-faint);
+}
+
+/* Status bar item */
+.similar-notes-status-bar {
+    padding: 0 4px;
+}
+
+.similar-notes-status-bar:hover {
+    background-color: var(--background-modifier-hover);
+    color: var(--text-normal);
+}
+
+.similar-notes-status-bar .status-bar-item-icon {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+.similar-notes-status-bar .status-bar-item-icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.similar-notes-status-bar.has-error .status-bar-item-icon {
+    color: var(--color-red);
+}

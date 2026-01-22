@@ -15,5 +15,6 @@
     "dashboard": 3,
     "task": 4
   },
-  "_version": 3
+  "tagColors": {},
+  "_version": 4
 }

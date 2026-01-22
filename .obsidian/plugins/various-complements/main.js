@@ -343,261 +343,11 @@ merge.withOptions = (options, ...objects) => {
 
 // src/app-helper.ts
 var import_obsidian = require("obsidian");
-var AppHelper = class {
-  constructor(app2) {
-    this.unsafeApp = app2;
-  }
-  async exists(path2) {
-    return await this.unsafeApp.vault.adapter.exists(path2);
-  }
-  async loadFile(path2) {
-    if (!await this.exists(path2)) {
-      throw Error(`The file is not found: ${path2}`);
-    }
-    return this.unsafeApp.vault.adapter.read(path2);
-  }
-  async loadJson(path2) {
-    return JSON.parse(await this.loadFile(path2));
-  }
-  async saveJson(path2, data) {
-    await this.unsafeApp.vault.adapter.write(path2, JSON.stringify(data));
-  }
-  equalsAsEditorPosition(one, other) {
-    return one.line === other.line && one.ch === other.ch;
-  }
-  getAliases(file) {
-    var _a, _b;
-    return (_b = (0, import_obsidian.parseFrontMatterAliases)(
-      (_a = this.unsafeApp.metadataCache.getFileCache(file)) == null ? void 0 : _a.frontmatter
-    )) != null ? _b : [];
-  }
-  getFrontMatter(file) {
-    var _a, _b, _c, _d;
-    const frontMatter = (_a = this.unsafeApp.metadataCache.getFileCache(file)) == null ? void 0 : _a.frontmatter;
-    if (!frontMatter) {
-      return void 0;
-    }
-    const tags = (_c = (_b = (0, import_obsidian.parseFrontMatterTags)(frontMatter)) == null ? void 0 : _b.map((x) => x.slice(1))) != null ? _c : [];
-    const aliases = (_d = (0, import_obsidian.parseFrontMatterAliases)(frontMatter)) != null ? _d : [];
-    const { position, ...rest } = frontMatter;
-    return {
-      ...Object.fromEntries(
-        Object.entries(rest).map(([k, _v]) => [
-          k,
-          (0, import_obsidian.parseFrontMatterStringArray)(frontMatter, k)
-        ])
-      ),
-      tags,
-      tag: tags,
-      aliases,
-      alias: aliases
-    };
-  }
-  getTagsProperty(file) {
-    var _a, _b, _c;
-    const frontMatter = (_a = this.unsafeApp.metadataCache.getFileCache(file)) == null ? void 0 : _a.frontmatter;
-    if (!frontMatter) {
-      return [];
-    }
-    return (_c = (_b = (0, import_obsidian.parseFrontMatterTags)(frontMatter)) == null ? void 0 : _b.map((x) => x.slice(1))) != null ? _c : [];
-  }
-  getBoolFrontMatter(file, key) {
-    var _a, _b;
-    return Boolean(
-      (_b = (_a = this.unsafeApp.metadataCache.getFileCache(file)) == null ? void 0 : _a.frontmatter) == null ? void 0 : _b[key]
-    );
-  }
-  getMarkdownViewInActiveLeaf() {
-    if (!this.unsafeApp.workspace.getActiveViewOfType(import_obsidian.MarkdownView)) {
-      return null;
-    }
-    return this.unsafeApp.workspace.activeLeaf.view;
-  }
-  getActiveFile() {
-    return this.unsafeApp.workspace.getActiveFile();
-  }
-  isActiveFile(file) {
-    var _a;
-    return ((_a = this.getActiveFile()) == null ? void 0 : _a.path) === file.path;
-  }
-  getPreviousFile() {
-    var _a;
-    const fName = (_a = this.unsafeApp.workspace.getLastOpenFiles()) == null ? void 0 : _a[1];
-    if (!fName) {
-      return null;
-    }
-    return this.getMarkdownFileByPath(fName);
-  }
-  getCurrentDirname() {
-    var _a, _b;
-    return (_b = (_a = this.getActiveFile()) == null ? void 0 : _a.parent.path) != null ? _b : null;
-  }
-  getCurrentEditor() {
-    var _a, _b;
-    return (_b = (_a = this.getMarkdownViewInActiveLeaf()) == null ? void 0 : _a.editor) != null ? _b : null;
-  }
-  getSelection() {
-    var _a;
-    return (_a = this.getCurrentEditor()) == null ? void 0 : _a.getSelection();
-  }
-  getCurrentOffset(editor) {
-    return editor.posToOffset(editor.getCursor());
-  }
-  getContentUntilCursor(editor) {
-    return editor.getValue().slice(0, this.getCurrentOffset(editor));
-  }
-  getCurrentLine(editor) {
-    return editor.getLine(editor.getCursor().line);
-  }
-  getCurrentLineUntilCursor(editor) {
-    return this.getCurrentLine(editor).slice(0, editor.getCursor().ch);
-  }
-  optimizeMarkdownLinkText(linkText) {
-    var _a;
-    const activeFile = this.getActiveFile();
-    if (!activeFile) {
-      return null;
-    }
-    const path2 = this.linkText2Path(linkText);
-    if (!path2) {
-      return { displayed: linkText, link: linkText };
-    }
-    const file = this.getMarkdownFileByPath(path2);
-    if (!file) {
-      return null;
-    }
-    const markdownLink = this.unsafeApp.fileManager.generateMarkdownLink(
-      file,
-      activeFile.path
-    );
-    if (markdownLink.startsWith("[[")) {
-      const text2 = (_a = markdownLink.matchAll(/^\[\[(?<text>.+)]]$/g).next().value.groups) == null ? void 0 : _a.text;
-      return { displayed: text2, link: text2 };
-    } else {
-      const { displayed, link } = markdownLink.matchAll(/^\[(?<displayed>.+)]\(\<?(?<link>.+)\.md\>?\)$/g).next().value.groups;
-      return { displayed, link };
-    }
-  }
-  linkText2Path(linkText) {
-    var _a, _b;
-    const activeFile = this.getActiveFile();
-    if (!activeFile) {
-      return null;
-    }
-    return (_b = (_a = this.unsafeApp.metadataCache.getFirstLinkpathDest(
-      linkText,
-      activeFile.path
-    )) == null ? void 0 : _a.path) != null ? _b : null;
-  }
-  inMathBlock(editor) {
-    var _a, _b;
-    const numberOfDollarPair = (_b = (_a = this.getContentUntilCursor(editor).match(/\$\$\n/g)) == null ? void 0 : _a.length) != null ? _b : 0;
-    return numberOfDollarPair % 2 !== 0;
-  }
-  searchPhantomLinks() {
-    return Object.entries(this.unsafeApp.metadataCache.unresolvedLinks).flatMap(
-      ([path2, obj]) => Object.keys(obj).map((link) => ({ path: path2, link }))
-    );
-  }
-  getResolvedLinks(file) {
-    var _a, _b;
-    return (_b = Object.keys(
-      (_a = this.unsafeApp.metadataCache.resolvedLinks[file.path]) != null ? _a : {}
-    )) != null ? _b : [];
-  }
-  getUnresolvedLinks(file) {
-    var _a;
-    const countsByLink = (_a = this.unsafeApp.metadataCache.unresolvedLinks[file.path]) != null ? _a : {};
-    return new Set(Object.keys(countsByLink));
-  }
-  getMarkdownFileByPath(path2) {
-    if (!path2.endsWith(".md")) {
-      return null;
-    }
-    const abstractFile = this.unsafeApp.vault.getAbstractFileByPath(path2);
-    if (!abstractFile) {
-      return null;
-    }
-    return abstractFile;
-  }
-  openMarkdownFile(file, newLeaf, offset = 0) {
-    var _a;
-    const leaf = this.unsafeApp.workspace.getLeaf(newLeaf);
-    leaf.openFile(file, (_a = this.unsafeApp.workspace.activeLeaf) == null ? void 0 : _a.getViewState()).then(() => {
-      this.unsafeApp.workspace.setActiveLeaf(leaf, true, true);
-      const viewOfType = this.unsafeApp.workspace.getActiveViewOfType(import_obsidian.MarkdownView);
-      if (viewOfType) {
-        const editor = viewOfType.editor;
-        const pos = editor.offsetToPos(offset);
-        editor.setCursor(pos);
-        editor.scrollIntoView({ from: pos, to: pos }, true);
-      }
-    });
-  }
-  getCurrentFrontMatter() {
-    var _a, _b;
-    const editor = this.getCurrentEditor();
-    if (!editor) {
-      return null;
-    }
-    if (!this.getActiveFile()) {
-      return null;
-    }
-    if (editor.getLine(0) !== "---") {
-      return null;
-    }
-    const endPosition = editor.getValue().indexOf("---", 3);
-    const currentOffset = this.getCurrentOffset(editor);
-    if (endPosition !== -1 && currentOffset >= endPosition) {
-      return null;
-    }
-    const keyLocations = Array.from(
-      editor.getValue().matchAll(/\s*['"]?(?<key>.+?)['"]?:/g)
-    );
-    if (keyLocations.length === 0) {
-      return null;
-    }
-    const currentKeyLocation = keyLocations.filter((x) => x.index < currentOffset).last();
-    if (!currentKeyLocation) {
-      return null;
-    }
-    return (_b = (_a = currentKeyLocation.groups) == null ? void 0 : _a.key) != null ? _b : null;
-  }
-  /**
-   * Unsafe method
-   */
-  isIMEOn() {
-    var _a, _b, _c;
-    if (!this.unsafeApp.workspace.getActiveViewOfType(import_obsidian.MarkdownView)) {
-      return false;
-    }
-    const markdownView = this.unsafeApp.workspace.activeLeaf.view;
-    const cm5or6 = markdownView.editor.cm;
-    if (((_a = cm5or6 == null ? void 0 : cm5or6.inputState) == null ? void 0 : _a.composing) > 0) {
-      return true;
-    }
-    return !!((_c = (_b = cm5or6 == null ? void 0 : cm5or6.display) == null ? void 0 : _b.input) == null ? void 0 : _c.composing);
-  }
-  isMobile() {
-    return this.unsafeApp.isMobile;
-  }
-  async writeLog(log) {
-    await this.unsafeApp.vault.adapter.append((0, import_obsidian.normalizePath)("log.md"), log);
-  }
-  get useWikiLinks() {
-    return !this.unsafeApp.vault.config.useMarkdownLinks;
-  }
-  get newLinkFormat() {
-    var _a;
-    return (_a = this.unsafeApp.vault.config.newLinkFormat) != null ? _a : "shortest";
-  }
+
+// node_modules/.pnpm/emoji-regex@10.3.0/node_modules/emoji-regex/index.mjs
+var emoji_regex_default = () => {
+  return /[#*0-9]\uFE0F?\u20E3|[\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u23CF\u23ED-\u23EF\u23F1\u23F2\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB\u25FC\u25FE\u2600-\u2604\u260E\u2611\u2614\u2615\u2618\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u267F\u2692\u2694-\u2697\u2699\u269B\u269C\u26A0\u26A7\u26AA\u26B0\u26B1\u26BD\u26BE\u26C4\u26C8\u26CF\u26D1\u26E9\u26F0-\u26F5\u26F7\u26F8\u26FA\u2702\u2708\u2709\u270F\u2712\u2714\u2716\u271D\u2721\u2733\u2734\u2744\u2747\u2757\u2763\u27A1\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B55\u3030\u303D\u3297\u3299]\uFE0F?|[\u261D\u270C\u270D](?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?|[\u270A\u270B](?:\uD83C[\uDFFB-\uDFFF])?|[\u23E9-\u23EC\u23F0\u23F3\u25FD\u2693\u26A1\u26AB\u26C5\u26CE\u26D4\u26EA\u26FD\u2705\u2728\u274C\u274E\u2753-\u2755\u2795-\u2797\u27B0\u27BF\u2B50]|\u26D3\uFE0F?(?:\u200D\uD83D\uDCA5)?|\u26F9(?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|\u2764\uFE0F?(?:\u200D(?:\uD83D\uDD25|\uD83E\uDE79))?|\uD83C(?:[\uDC04\uDD70\uDD71\uDD7E\uDD7F\uDE02\uDE37\uDF21\uDF24-\uDF2C\uDF36\uDF7D\uDF96\uDF97\uDF99-\uDF9B\uDF9E\uDF9F\uDFCD\uDFCE\uDFD4-\uDFDF\uDFF5\uDFF7]\uFE0F?|[\uDF85\uDFC2\uDFC7](?:\uD83C[\uDFFB-\uDFFF])?|[\uDFC4\uDFCA](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDFCB\uDFCC](?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDCCF\uDD8E\uDD91-\uDD9A\uDE01\uDE1A\uDE2F\uDE32-\uDE36\uDE38-\uDE3A\uDE50\uDE51\uDF00-\uDF20\uDF2D-\uDF35\uDF37-\uDF43\uDF45-\uDF4A\uDF4C-\uDF7C\uDF7E-\uDF84\uDF86-\uDF93\uDFA0-\uDFC1\uDFC5\uDFC6\uDFC8\uDFC9\uDFCF-\uDFD3\uDFE0-\uDFF0\uDFF8-\uDFFF]|\uDDE6\uD83C[\uDDE8-\uDDEC\uDDEE\uDDF1\uDDF2\uDDF4\uDDF6-\uDDFA\uDDFC\uDDFD\uDDFF]|\uDDE7\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEF\uDDF1-\uDDF4\uDDF6-\uDDF9\uDDFB\uDDFC\uDDFE\uDDFF]|\uDDE8\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDEE\uDDF0-\uDDF5\uDDF7\uDDFA-\uDDFF]|\uDDE9\uD83C[\uDDEA\uDDEC\uDDEF\uDDF0\uDDF2\uDDF4\uDDFF]|\uDDEA\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDED\uDDF7-\uDDFA]|\uDDEB\uD83C[\uDDEE-\uDDF0\uDDF2\uDDF4\uDDF7]|\uDDEC\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEE\uDDF1-\uDDF3\uDDF5-\uDDFA\uDDFC\uDDFE]|\uDDED\uD83C[\uDDF0\uDDF2\uDDF3\uDDF7\uDDF9\uDDFA]|\uDDEE\uD83C[\uDDE8-\uDDEA\uDDF1-\uDDF4\uDDF6-\uDDF9]|\uDDEF\uD83C[\uDDEA\uDDF2\uDDF4\uDDF5]|\uDDF0\uD83C[\uDDEA\uDDEC-\uDDEE\uDDF2\uDDF3\uDDF5\uDDF7\uDDFC\uDDFE\uDDFF]|\uDDF1\uD83C[\uDDE6-\uDDE8\uDDEE\uDDF0\uDDF7-\uDDFB\uDDFE]|\uDDF2\uD83C[\uDDE6\uDDE8-\uDDED\uDDF0-\uDDFF]|\uDDF3\uD83C[\uDDE6\uDDE8\uDDEA-\uDDEC\uDDEE\uDDF1\uDDF4\uDDF5\uDDF7\uDDFA\uDDFF]|\uDDF4\uD83C\uDDF2|\uDDF5\uD83C[\uDDE6\uDDEA-\uDDED\uDDF0-\uDDF3\uDDF7-\uDDF9\uDDFC\uDDFE]|\uDDF6\uD83C\uDDE6|\uDDF7\uD83C[\uDDEA\uDDF4\uDDF8\uDDFA\uDDFC]|\uDDF8\uD83C[\uDDE6-\uDDEA\uDDEC-\uDDF4\uDDF7-\uDDF9\uDDFB\uDDFD-\uDDFF]|\uDDF9\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDED\uDDEF-\uDDF4\uDDF7\uDDF9\uDDFB\uDDFC\uDDFF]|\uDDFA\uD83C[\uDDE6\uDDEC\uDDF2\uDDF3\uDDF8\uDDFE\uDDFF]|\uDDFB\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDEE\uDDF3\uDDFA]|\uDDFC\uD83C[\uDDEB\uDDF8]|\uDDFD\uD83C\uDDF0|\uDDFE\uD83C[\uDDEA\uDDF9]|\uDDFF\uD83C[\uDDE6\uDDF2\uDDFC]|\uDF44(?:\u200D\uD83D\uDFEB)?|\uDF4B(?:\u200D\uD83D\uDFE9)?|\uDFC3(?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D(?:[\u2640\u2642]\uFE0F?(?:\u200D\u27A1\uFE0F?)?|\u27A1\uFE0F?))?|\uDFF3\uFE0F?(?:\u200D(?:\u26A7\uFE0F?|\uD83C\uDF08))?|\uDFF4(?:\u200D\u2620\uFE0F?|\uDB40\uDC67\uDB40\uDC62\uDB40(?:\uDC65\uDB40\uDC6E\uDB40\uDC67|\uDC73\uDB40\uDC63\uDB40\uDC74|\uDC77\uDB40\uDC6C\uDB40\uDC73)\uDB40\uDC7F)?)|\uD83D(?:[\uDC3F\uDCFD\uDD49\uDD4A\uDD6F\uDD70\uDD73\uDD76-\uDD79\uDD87\uDD8A-\uDD8D\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA\uDECB\uDECD-\uDECF\uDEE0-\uDEE5\uDEE9\uDEF0\uDEF3]\uFE0F?|[\uDC42\uDC43\uDC46-\uDC50\uDC66\uDC67\uDC6B-\uDC6D\uDC72\uDC74-\uDC76\uDC78\uDC7C\uDC83\uDC85\uDC8F\uDC91\uDCAA\uDD7A\uDD95\uDD96\uDE4C\uDE4F\uDEC0\uDECC](?:\uD83C[\uDFFB-\uDFFF])?|[\uDC6E\uDC70\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4\uDEB5](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDD74\uDD90](?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?|[\uDC00-\uDC07\uDC09-\uDC14\uDC16-\uDC25\uDC27-\uDC3A\uDC3C-\uDC3E\uDC40\uDC44\uDC45\uDC51-\uDC65\uDC6A\uDC79-\uDC7B\uDC7D-\uDC80\uDC84\uDC88-\uDC8E\uDC90\uDC92-\uDCA9\uDCAB-\uDCFC\uDCFF-\uDD3D\uDD4B-\uDD4E\uDD50-\uDD67\uDDA4\uDDFB-\uDE2D\uDE2F-\uDE34\uDE37-\uDE41\uDE43\uDE44\uDE48-\uDE4A\uDE80-\uDEA2\uDEA4-\uDEB3\uDEB7-\uDEBF\uDEC1-\uDEC5\uDED0-\uDED2\uDED5-\uDED7\uDEDC-\uDEDF\uDEEB\uDEEC\uDEF4-\uDEFC\uDFE0-\uDFEB\uDFF0]|\uDC08(?:\u200D\u2B1B)?|\uDC15(?:\u200D\uD83E\uDDBA)?|\uDC26(?:\u200D(?:\u2B1B|\uD83D\uDD25))?|\uDC3B(?:\u200D\u2744\uFE0F?)?|\uDC41\uFE0F?(?:\u200D\uD83D\uDDE8\uFE0F?)?|\uDC68(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D(?:[\uDC68\uDC69]\u200D\uD83D(?:\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?)|[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?)|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]))|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFC-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB\uDFFD-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB-\uDFFD\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB-\uDFFE])))?))?|\uDC69(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?[\uDC68\uDC69]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D(?:[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?|\uDC69\u200D\uD83D(?:\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?))|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]))|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFC-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB\uDFFD-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB-\uDFFD\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB-\uDFFE])))?))?|\uDC6F(?:\u200D[\u2640\u2642]\uFE0F?)?|\uDD75(?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|\uDE2E(?:\u200D\uD83D\uDCA8)?|\uDE35(?:\u200D\uD83D\uDCAB)?|\uDE36(?:\u200D\uD83C\uDF2B\uFE0F?)?|\uDE42(?:\u200D[\u2194\u2195]\uFE0F?)?|\uDEB6(?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D(?:[\u2640\u2642]\uFE0F?(?:\u200D\u27A1\uFE0F?)?|\u27A1\uFE0F?))?)|\uD83E(?:[\uDD0C\uDD0F\uDD18-\uDD1F\uDD30-\uDD34\uDD36\uDD77\uDDB5\uDDB6\uDDBB\uDDD2\uDDD3\uDDD5\uDEC3-\uDEC5\uDEF0\uDEF2-\uDEF8](?:\uD83C[\uDFFB-\uDFFF])?|[\uDD26\uDD35\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD\uDDCF\uDDD4\uDDD6-\uDDDD](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDDDE\uDDDF](?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDD0D\uDD0E\uDD10-\uDD17\uDD20-\uDD25\uDD27-\uDD2F\uDD3A\uDD3F-\uDD45\uDD47-\uDD76\uDD78-\uDDB4\uDDB7\uDDBA\uDDBC-\uDDCC\uDDD0\uDDE0-\uDDFF\uDE70-\uDE7C\uDE80-\uDE88\uDE90-\uDEBD\uDEBF-\uDEC2\uDECE-\uDEDB\uDEE0-\uDEE8]|\uDD3C(?:\u200D[\u2640\u2642]\uFE0F?|\uD83C[\uDFFB-\uDFFF])?|\uDDCE(?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D(?:[\u2640\u2642]\uFE0F?(?:\u200D\u27A1\uFE0F?)?|\u27A1\uFE0F?))?|\uDDD1(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1|\uDDD1\u200D\uD83E\uDDD2(?:\u200D\uD83E\uDDD2)?|\uDDD2(?:\u200D\uD83E\uDDD2)?))|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFC-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB\uDFFD-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB-\uDFFD\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB-\uDFFE]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?))?|\uDEF1(?:\uD83C(?:\uDFFB(?:\u200D\uD83E\uDEF2\uD83C[\uDFFC-\uDFFF])?|\uDFFC(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB\uDFFD-\uDFFF])?|\uDFFD(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])?|\uDFFE(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB-\uDFFD\uDFFF])?|\uDFFF(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB-\uDFFE])?))?)/g;
 };
-
-// src/setting/settings.ts
-var import_obsidian3 = require("obsidian");
-
-// src/keys.ts
-var import_obsidian2 = require("obsidian");
 
 // src/util/collection-helper.ts
 var groupBy = (values, toKey) => values.reduce(
@@ -638,152 +388,6 @@ function max(collection, emptyValue) {
   const select2 = (a, b) => a >= b ? a : b;
   return collection.reduce(select2, emptyValue);
 }
-
-// src/keys.ts
-var MOD = import_obsidian2.Platform.isMacOS ? "Cmd" : "Ctrl";
-var ALT = import_obsidian2.Platform.isMacOS ? "Option" : "Alt";
-function hotkey2String(hk) {
-  if (!hk) {
-    return "";
-  }
-  const hotkey = hk.key === " " ? "Space" : hk.key;
-  const mods = hk.modifiers.join(" ");
-  return mods ? `${mods} ${hotkey}` : hotkey;
-}
-function string2Hotkey(hotKey, hideHotkeyGuide) {
-  const keys = hotKey.split(" ");
-  if (keys.length === 0 || keys[0] === "") {
-    return null;
-  }
-  if (keys.length === 1) {
-    return {
-      modifiers: [],
-      key: keys[0].replace("Space", " "),
-      hideHotkeyGuide
-    };
-  }
-  return {
-    modifiers: keys.slice(0, -1),
-    key: keys.last().replace("Space", " "),
-    hideHotkeyGuide
-  };
-}
-
-// src/option/ColumnDelimiter.ts
-var _ColumnDelimiter = class _ColumnDelimiter {
-  constructor(name, value) {
-    this.name = name;
-    this.value = value;
-    _ColumnDelimiter._values.push(this);
-  }
-  static fromName(name) {
-    return _ColumnDelimiter._values.find((x) => x.name === name);
-  }
-  static values() {
-    return _ColumnDelimiter._values;
-  }
-};
-_ColumnDelimiter._values = [];
-_ColumnDelimiter.TAB = new _ColumnDelimiter("Tab", "	");
-_ColumnDelimiter.COMMA = new _ColumnDelimiter("Comma", ",");
-_ColumnDelimiter.PIPE = new _ColumnDelimiter("Pipe", "|");
-var ColumnDelimiter = _ColumnDelimiter;
-
-// src/util/path.ts
-function basename(path2, ext2) {
-  var _a, _b;
-  const name = (_b = (_a = path2.match(/.+[\\/]([^\\/]+)[\\/]?$/)) == null ? void 0 : _a[1]) != null ? _b : path2;
-  return ext2 && name.endsWith(ext2) ? name.replace(ext2, "") : name;
-}
-function dirname(path2) {
-  var _a, _b;
-  return (_b = (_a = path2.match(/(.+)[\\/].+$/)) == null ? void 0 : _a[1]) != null ? _b : ".";
-}
-function isURL(path2) {
-  return Boolean(path2.match(new RegExp("^https?://")));
-}
-var DEFAULT_HISTORIES_PATH = ".obsidian/plugins/various-complements/histories.json";
-
-// src/option/DescriptionOnSuggestion.ts
-var _DescriptionOnSuggestion = class _DescriptionOnSuggestion {
-  constructor(name, toDisplay) {
-    this.name = name;
-    this.toDisplay = toDisplay;
-    _DescriptionOnSuggestion._values.push(this);
-  }
-  static fromName(name) {
-    return _DescriptionOnSuggestion._values.find((x) => x.name === name);
-  }
-  static values() {
-    return _DescriptionOnSuggestion._values;
-  }
-};
-_DescriptionOnSuggestion._values = [];
-_DescriptionOnSuggestion.NONE = new _DescriptionOnSuggestion("None", () => null);
-_DescriptionOnSuggestion.SHORT = new _DescriptionOnSuggestion("Short", (word) => {
-  if (!word.description) {
-    return null;
-  }
-  return word.type === "customDictionary" ? word.description : basename(word.description);
-});
-_DescriptionOnSuggestion.FULL = new _DescriptionOnSuggestion(
-  "Full",
-  (word) => {
-    var _a;
-    return (_a = word.description) != null ? _a : null;
-  }
-);
-var DescriptionOnSuggestion = _DescriptionOnSuggestion;
-
-// src/model/Word.ts
-var _WordTypeMeta = class _WordTypeMeta {
-  constructor(type, priority, group) {
-    this.type = type;
-    this.priority = priority;
-    this.group = group;
-    _WordTypeMeta._values.push(this);
-    _WordTypeMeta._dict[type] = this;
-  }
-  static of(type) {
-    return _WordTypeMeta._dict[type];
-  }
-  static values() {
-    return _WordTypeMeta._values;
-  }
-};
-_WordTypeMeta._values = [];
-_WordTypeMeta._dict = {};
-_WordTypeMeta.FRONT_MATTER = new _WordTypeMeta(
-  "frontMatter",
-  100,
-  "frontMatter"
-);
-_WordTypeMeta.INTERNAL_LINK = new _WordTypeMeta(
-  "internalLink",
-  90,
-  "internalLink"
-);
-_WordTypeMeta.CUSTOM_DICTIONARY = new _WordTypeMeta(
-  "customDictionary",
-  80,
-  "suggestion"
-);
-_WordTypeMeta.CURRENT_FILE = new _WordTypeMeta(
-  "currentFile",
-  70,
-  "suggestion"
-);
-_WordTypeMeta.CURRENT_VAULT = new _WordTypeMeta(
-  "currentVault",
-  60,
-  "suggestion"
-);
-var WordTypeMeta = _WordTypeMeta;
-
-// node_modules/.pnpm/emoji-regex@10.3.0/node_modules/emoji-regex/index.mjs
-var emoji_regex_default = () => {
-  return /[#*0-9]\uFE0F?\u20E3|[\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u23CF\u23ED-\u23EF\u23F1\u23F2\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB\u25FC\u25FE\u2600-\u2604\u260E\u2611\u2614\u2615\u2618\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u267F\u2692\u2694-\u2697\u2699\u269B\u269C\u26A0\u26A7\u26AA\u26B0\u26B1\u26BD\u26BE\u26C4\u26C8\u26CF\u26D1\u26E9\u26F0-\u26F5\u26F7\u26F8\u26FA\u2702\u2708\u2709\u270F\u2712\u2714\u2716\u271D\u2721\u2733\u2734\u2744\u2747\u2757\u2763\u27A1\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B55\u3030\u303D\u3297\u3299]\uFE0F?|[\u261D\u270C\u270D](?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?|[\u270A\u270B](?:\uD83C[\uDFFB-\uDFFF])?|[\u23E9-\u23EC\u23F0\u23F3\u25FD\u2693\u26A1\u26AB\u26C5\u26CE\u26D4\u26EA\u26FD\u2705\u2728\u274C\u274E\u2753-\u2755\u2795-\u2797\u27B0\u27BF\u2B50]|\u26D3\uFE0F?(?:\u200D\uD83D\uDCA5)?|\u26F9(?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|\u2764\uFE0F?(?:\u200D(?:\uD83D\uDD25|\uD83E\uDE79))?|\uD83C(?:[\uDC04\uDD70\uDD71\uDD7E\uDD7F\uDE02\uDE37\uDF21\uDF24-\uDF2C\uDF36\uDF7D\uDF96\uDF97\uDF99-\uDF9B\uDF9E\uDF9F\uDFCD\uDFCE\uDFD4-\uDFDF\uDFF5\uDFF7]\uFE0F?|[\uDF85\uDFC2\uDFC7](?:\uD83C[\uDFFB-\uDFFF])?|[\uDFC4\uDFCA](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDFCB\uDFCC](?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDCCF\uDD8E\uDD91-\uDD9A\uDE01\uDE1A\uDE2F\uDE32-\uDE36\uDE38-\uDE3A\uDE50\uDE51\uDF00-\uDF20\uDF2D-\uDF35\uDF37-\uDF43\uDF45-\uDF4A\uDF4C-\uDF7C\uDF7E-\uDF84\uDF86-\uDF93\uDFA0-\uDFC1\uDFC5\uDFC6\uDFC8\uDFC9\uDFCF-\uDFD3\uDFE0-\uDFF0\uDFF8-\uDFFF]|\uDDE6\uD83C[\uDDE8-\uDDEC\uDDEE\uDDF1\uDDF2\uDDF4\uDDF6-\uDDFA\uDDFC\uDDFD\uDDFF]|\uDDE7\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEF\uDDF1-\uDDF4\uDDF6-\uDDF9\uDDFB\uDDFC\uDDFE\uDDFF]|\uDDE8\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDEE\uDDF0-\uDDF5\uDDF7\uDDFA-\uDDFF]|\uDDE9\uD83C[\uDDEA\uDDEC\uDDEF\uDDF0\uDDF2\uDDF4\uDDFF]|\uDDEA\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDED\uDDF7-\uDDFA]|\uDDEB\uD83C[\uDDEE-\uDDF0\uDDF2\uDDF4\uDDF7]|\uDDEC\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEE\uDDF1-\uDDF3\uDDF5-\uDDFA\uDDFC\uDDFE]|\uDDED\uD83C[\uDDF0\uDDF2\uDDF3\uDDF7\uDDF9\uDDFA]|\uDDEE\uD83C[\uDDE8-\uDDEA\uDDF1-\uDDF4\uDDF6-\uDDF9]|\uDDEF\uD83C[\uDDEA\uDDF2\uDDF4\uDDF5]|\uDDF0\uD83C[\uDDEA\uDDEC-\uDDEE\uDDF2\uDDF3\uDDF5\uDDF7\uDDFC\uDDFE\uDDFF]|\uDDF1\uD83C[\uDDE6-\uDDE8\uDDEE\uDDF0\uDDF7-\uDDFB\uDDFE]|\uDDF2\uD83C[\uDDE6\uDDE8-\uDDED\uDDF0-\uDDFF]|\uDDF3\uD83C[\uDDE6\uDDE8\uDDEA-\uDDEC\uDDEE\uDDF1\uDDF4\uDDF5\uDDF7\uDDFA\uDDFF]|\uDDF4\uD83C\uDDF2|\uDDF5\uD83C[\uDDE6\uDDEA-\uDDED\uDDF0-\uDDF3\uDDF7-\uDDF9\uDDFC\uDDFE]|\uDDF6\uD83C\uDDE6|\uDDF7\uD83C[\uDDEA\uDDF4\uDDF8\uDDFA\uDDFC]|\uDDF8\uD83C[\uDDE6-\uDDEA\uDDEC-\uDDF4\uDDF7-\uDDF9\uDDFB\uDDFD-\uDDFF]|\uDDF9\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDED\uDDEF-\uDDF4\uDDF7\uDDF9\uDDFB\uDDFC\uDDFF]|\uDDFA\uD83C[\uDDE6\uDDEC\uDDF2\uDDF3\uDDF8\uDDFE\uDDFF]|\uDDFB\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDEE\uDDF3\uDDFA]|\uDDFC\uD83C[\uDDEB\uDDF8]|\uDDFD\uD83C\uDDF0|\uDDFE\uD83C[\uDDEA\uDDF9]|\uDDFF\uD83C[\uDDE6\uDDF2\uDDFC]|\uDF44(?:\u200D\uD83D\uDFEB)?|\uDF4B(?:\u200D\uD83D\uDFE9)?|\uDFC3(?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D(?:[\u2640\u2642]\uFE0F?(?:\u200D\u27A1\uFE0F?)?|\u27A1\uFE0F?))?|\uDFF3\uFE0F?(?:\u200D(?:\u26A7\uFE0F?|\uD83C\uDF08))?|\uDFF4(?:\u200D\u2620\uFE0F?|\uDB40\uDC67\uDB40\uDC62\uDB40(?:\uDC65\uDB40\uDC6E\uDB40\uDC67|\uDC73\uDB40\uDC63\uDB40\uDC74|\uDC77\uDB40\uDC6C\uDB40\uDC73)\uDB40\uDC7F)?)|\uD83D(?:[\uDC3F\uDCFD\uDD49\uDD4A\uDD6F\uDD70\uDD73\uDD76-\uDD79\uDD87\uDD8A-\uDD8D\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA\uDECB\uDECD-\uDECF\uDEE0-\uDEE5\uDEE9\uDEF0\uDEF3]\uFE0F?|[\uDC42\uDC43\uDC46-\uDC50\uDC66\uDC67\uDC6B-\uDC6D\uDC72\uDC74-\uDC76\uDC78\uDC7C\uDC83\uDC85\uDC8F\uDC91\uDCAA\uDD7A\uDD95\uDD96\uDE4C\uDE4F\uDEC0\uDECC](?:\uD83C[\uDFFB-\uDFFF])?|[\uDC6E\uDC70\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4\uDEB5](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDD74\uDD90](?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?|[\uDC00-\uDC07\uDC09-\uDC14\uDC16-\uDC25\uDC27-\uDC3A\uDC3C-\uDC3E\uDC40\uDC44\uDC45\uDC51-\uDC65\uDC6A\uDC79-\uDC7B\uDC7D-\uDC80\uDC84\uDC88-\uDC8E\uDC90\uDC92-\uDCA9\uDCAB-\uDCFC\uDCFF-\uDD3D\uDD4B-\uDD4E\uDD50-\uDD67\uDDA4\uDDFB-\uDE2D\uDE2F-\uDE34\uDE37-\uDE41\uDE43\uDE44\uDE48-\uDE4A\uDE80-\uDEA2\uDEA4-\uDEB3\uDEB7-\uDEBF\uDEC1-\uDEC5\uDED0-\uDED2\uDED5-\uDED7\uDEDC-\uDEDF\uDEEB\uDEEC\uDEF4-\uDEFC\uDFE0-\uDFEB\uDFF0]|\uDC08(?:\u200D\u2B1B)?|\uDC15(?:\u200D\uD83E\uDDBA)?|\uDC26(?:\u200D(?:\u2B1B|\uD83D\uDD25))?|\uDC3B(?:\u200D\u2744\uFE0F?)?|\uDC41\uFE0F?(?:\u200D\uD83D\uDDE8\uFE0F?)?|\uDC68(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D(?:[\uDC68\uDC69]\u200D\uD83D(?:\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?)|[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?)|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]))|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFC-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB\uDFFD-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB-\uDFFD\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB-\uDFFE])))?))?|\uDC69(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?[\uDC68\uDC69]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D(?:[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?|\uDC69\u200D\uD83D(?:\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?))|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]))|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFC-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB\uDFFD-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB-\uDFFD\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB-\uDFFE])))?))?|\uDC6F(?:\u200D[\u2640\u2642]\uFE0F?)?|\uDD75(?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|\uDE2E(?:\u200D\uD83D\uDCA8)?|\uDE35(?:\u200D\uD83D\uDCAB)?|\uDE36(?:\u200D\uD83C\uDF2B\uFE0F?)?|\uDE42(?:\u200D[\u2194\u2195]\uFE0F?)?|\uDEB6(?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D(?:[\u2640\u2642]\uFE0F?(?:\u200D\u27A1\uFE0F?)?|\u27A1\uFE0F?))?)|\uD83E(?:[\uDD0C\uDD0F\uDD18-\uDD1F\uDD30-\uDD34\uDD36\uDD77\uDDB5\uDDB6\uDDBB\uDDD2\uDDD3\uDDD5\uDEC3-\uDEC5\uDEF0\uDEF2-\uDEF8](?:\uD83C[\uDFFB-\uDFFF])?|[\uDD26\uDD35\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD\uDDCF\uDDD4\uDDD6-\uDDDD](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDDDE\uDDDF](?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDD0D\uDD0E\uDD10-\uDD17\uDD20-\uDD25\uDD27-\uDD2F\uDD3A\uDD3F-\uDD45\uDD47-\uDD76\uDD78-\uDDB4\uDDB7\uDDBA\uDDBC-\uDDCC\uDDD0\uDDE0-\uDDFF\uDE70-\uDE7C\uDE80-\uDE88\uDE90-\uDEBD\uDEBF-\uDEC2\uDECE-\uDEDB\uDEE0-\uDEE8]|\uDD3C(?:\u200D[\u2640\u2642]\uFE0F?|\uD83C[\uDFFB-\uDFFF])?|\uDDCE(?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D(?:[\u2640\u2642]\uFE0F?(?:\u200D\u27A1\uFE0F?)?|\u27A1\uFE0F?))?|\uDDD1(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1|\uDDD1\u200D\uD83E\uDDD2(?:\u200D\uD83E\uDDD2)?|\uDDD2(?:\u200D\uD83E\uDDD2)?))|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFC-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB\uDFFD-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB-\uDFFD\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB-\uDFFE]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?))?|\uDEF1(?:\uD83C(?:\uDFFB(?:\u200D\uD83E\uDEF2\uD83C[\uDFFC-\uDFFF])?|\uDFFC(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB\uDFFD-\uDFFF])?|\uDFFD(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])?|\uDFFE(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB-\uDFFD\uDFFF])?|\uDFFF(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB-\uDFFE])?))?)/g;
-};
 
 // src/util/diacritics-map.ts
 var defaultDiacriticsRemovalMap = [
@@ -1141,6 +745,433 @@ function joinNumberWithSymbol(tokens) {
   ret.push(stock);
   return ret;
 }
+function isEOTinCodeBlock(text2) {
+  const lines = text2.split("\n");
+  let inCodeBlock = false;
+  let codeBlockDelimiter = "";
+  let codeBlockDelimiterLength = 0;
+  for (const line of lines) {
+    const trimmedLine = line.trim();
+    const codeBlockMatch = trimmedLine.match(/^(`{3,}|~{3,})/);
+    if (codeBlockMatch) {
+      const delimiter = codeBlockMatch[1];
+      const delimiterChar = delimiter[0];
+      const delimiterLength = delimiter.length;
+      if (!inCodeBlock) {
+        inCodeBlock = true;
+        codeBlockDelimiter = delimiterChar;
+        codeBlockDelimiterLength = delimiterLength;
+      } else if (delimiterChar === codeBlockDelimiter && delimiterLength >= codeBlockDelimiterLength) {
+        inCodeBlock = false;
+        codeBlockDelimiter = "";
+        codeBlockDelimiterLength = 0;
+      }
+    }
+  }
+  return inCodeBlock;
+}
+
+// src/app-helper.ts
+var AppHelper = class {
+  constructor(app2) {
+    this.unsafeApp = app2;
+  }
+  async exists(path2) {
+    return await this.unsafeApp.vault.adapter.exists(path2);
+  }
+  async loadFile(path2) {
+    if (!await this.exists(path2)) {
+      throw Error(`The file is not found: ${path2}`);
+    }
+    return this.unsafeApp.vault.adapter.read(path2);
+  }
+  async loadJson(path2) {
+    return JSON.parse(await this.loadFile(path2));
+  }
+  async saveJson(path2, data) {
+    await this.unsafeApp.vault.adapter.write(path2, JSON.stringify(data));
+  }
+  equalsAsEditorPosition(one, other) {
+    return one.line === other.line && one.ch === other.ch;
+  }
+  getAliases(file) {
+    var _a, _b;
+    return (_b = (0, import_obsidian.parseFrontMatterAliases)(
+      (_a = this.unsafeApp.metadataCache.getFileCache(file)) == null ? void 0 : _a.frontmatter
+    )) != null ? _b : [];
+  }
+  getFrontMatter(file) {
+    var _a, _b, _c, _d;
+    const frontMatter = (_a = this.unsafeApp.metadataCache.getFileCache(file)) == null ? void 0 : _a.frontmatter;
+    if (!frontMatter) {
+      return void 0;
+    }
+    const tags = (_c = (_b = (0, import_obsidian.parseFrontMatterTags)(frontMatter)) == null ? void 0 : _b.map((x) => x.slice(1))) != null ? _c : [];
+    const aliases = (_d = (0, import_obsidian.parseFrontMatterAliases)(frontMatter)) != null ? _d : [];
+    const { position, ...rest } = frontMatter;
+    return {
+      ...Object.fromEntries(
+        Object.entries(rest).map(([k, _v]) => [
+          k,
+          (0, import_obsidian.parseFrontMatterStringArray)(frontMatter, k)
+        ])
+      ),
+      tags,
+      tag: tags,
+      aliases,
+      alias: aliases
+    };
+  }
+  getTagsProperty(file) {
+    var _a, _b, _c;
+    const frontMatter = (_a = this.unsafeApp.metadataCache.getFileCache(file)) == null ? void 0 : _a.frontmatter;
+    if (!frontMatter) {
+      return [];
+    }
+    return (_c = (_b = (0, import_obsidian.parseFrontMatterTags)(frontMatter)) == null ? void 0 : _b.map((x) => x.slice(1))) != null ? _c : [];
+  }
+  getBoolFrontMatter(file, key) {
+    var _a, _b;
+    return Boolean(
+      (_b = (_a = this.unsafeApp.metadataCache.getFileCache(file)) == null ? void 0 : _a.frontmatter) == null ? void 0 : _b[key]
+    );
+  }
+  getMarkdownViewInActiveLeaf() {
+    if (!this.unsafeApp.workspace.getActiveViewOfType(import_obsidian.MarkdownView)) {
+      return null;
+    }
+    return this.unsafeApp.workspace.activeLeaf.view;
+  }
+  getActiveFile() {
+    return this.unsafeApp.workspace.getActiveFile();
+  }
+  isActiveFile(file) {
+    var _a;
+    return ((_a = this.getActiveFile()) == null ? void 0 : _a.path) === file.path;
+  }
+  getPreviousFile() {
+    var _a;
+    const fName = (_a = this.unsafeApp.workspace.getLastOpenFiles()) == null ? void 0 : _a[1];
+    if (!fName) {
+      return null;
+    }
+    return this.getMarkdownFileByPath(fName);
+  }
+  getCurrentDirname() {
+    var _a, _b;
+    return (_b = (_a = this.getActiveFile()) == null ? void 0 : _a.parent.path) != null ? _b : null;
+  }
+  getCurrentEditor() {
+    var _a, _b;
+    return (_b = (_a = this.getMarkdownViewInActiveLeaf()) == null ? void 0 : _a.editor) != null ? _b : null;
+  }
+  getSelection() {
+    var _a;
+    return (_a = this.getCurrentEditor()) == null ? void 0 : _a.getSelection();
+  }
+  getCurrentOffset(editor) {
+    return editor.posToOffset(editor.getCursor());
+  }
+  getContentUntilCursor(editor) {
+    return editor.getValue().slice(0, this.getCurrentOffset(editor));
+  }
+  getCurrentLine(editor) {
+    return editor.getLine(editor.getCursor().line);
+  }
+  getCurrentLineUntilCursor(editor) {
+    return this.getCurrentLine(editor).slice(0, editor.getCursor().ch);
+  }
+  optimizeMarkdownLinkText(linkText) {
+    var _a;
+    const activeFile = this.getActiveFile();
+    if (!activeFile) {
+      return null;
+    }
+    const path2 = this.linkText2Path(linkText);
+    if (!path2) {
+      return { displayed: linkText, link: linkText };
+    }
+    const file = this.getMarkdownFileByPath(path2);
+    if (!file) {
+      return null;
+    }
+    const markdownLink = this.unsafeApp.fileManager.generateMarkdownLink(
+      file,
+      activeFile.path
+    );
+    if (markdownLink.startsWith("[[")) {
+      const text2 = (_a = markdownLink.matchAll(/^\[\[(?<text>.+)]]$/g).next().value.groups) == null ? void 0 : _a.text;
+      return { displayed: text2, link: text2 };
+    } else {
+      const { displayed, link } = markdownLink.matchAll(/^\[(?<displayed>.+)]\(\<?(?<link>.+)\.md\>?\)$/g).next().value.groups;
+      return { displayed, link };
+    }
+  }
+  linkText2Path(linkText) {
+    var _a, _b;
+    const activeFile = this.getActiveFile();
+    if (!activeFile) {
+      return null;
+    }
+    return (_b = (_a = this.unsafeApp.metadataCache.getFirstLinkpathDest(
+      linkText,
+      activeFile.path
+    )) == null ? void 0 : _a.path) != null ? _b : null;
+  }
+  inMathBlock(editor) {
+    var _a, _b;
+    const numberOfDollarPair = (_b = (_a = this.getContentUntilCursor(editor).match(/\$\$\n/g)) == null ? void 0 : _a.length) != null ? _b : 0;
+    return numberOfDollarPair % 2 !== 0;
+  }
+  /**
+   * WARN: This code does not support inline code blocks.
+   */
+  inCodeBlock(editor) {
+    return isEOTinCodeBlock(this.getContentUntilCursor(editor));
+  }
+  searchPhantomLinks() {
+    return Object.entries(this.unsafeApp.metadataCache.unresolvedLinks).flatMap(
+      ([path2, obj]) => Object.keys(obj).map((link) => ({ path: path2, link }))
+    );
+  }
+  getResolvedLinks(file) {
+    var _a, _b;
+    return (_b = Object.keys(
+      (_a = this.unsafeApp.metadataCache.resolvedLinks[file.path]) != null ? _a : {}
+    )) != null ? _b : [];
+  }
+  getUnresolvedLinks(file) {
+    var _a;
+    const countsByLink = (_a = this.unsafeApp.metadataCache.unresolvedLinks[file.path]) != null ? _a : {};
+    return new Set(Object.keys(countsByLink));
+  }
+  getMarkdownFileByPath(path2) {
+    if (!path2.endsWith(".md")) {
+      return null;
+    }
+    const abstractFile = this.unsafeApp.vault.getAbstractFileByPath(path2);
+    if (!abstractFile) {
+      return null;
+    }
+    return abstractFile;
+  }
+  openMarkdownFile(file, newLeaf, offset = 0) {
+    var _a;
+    const leaf = this.unsafeApp.workspace.getLeaf(newLeaf);
+    leaf.openFile(file, (_a = this.unsafeApp.workspace.activeLeaf) == null ? void 0 : _a.getViewState()).then(() => {
+      this.unsafeApp.workspace.setActiveLeaf(leaf, true, true);
+      const viewOfType = this.unsafeApp.workspace.getActiveViewOfType(import_obsidian.MarkdownView);
+      if (viewOfType) {
+        const editor = viewOfType.editor;
+        const pos = editor.offsetToPos(offset);
+        editor.setCursor(pos);
+        editor.scrollIntoView({ from: pos, to: pos }, true);
+      }
+    });
+  }
+  getCurrentFrontMatter() {
+    var _a, _b;
+    const editor = this.getCurrentEditor();
+    if (!editor) {
+      return null;
+    }
+    if (!this.getActiveFile()) {
+      return null;
+    }
+    if (editor.getLine(0) !== "---") {
+      return null;
+    }
+    const endPosition = editor.getValue().indexOf("---", 3);
+    const currentOffset = this.getCurrentOffset(editor);
+    if (endPosition !== -1 && currentOffset >= endPosition) {
+      return null;
+    }
+    const keyLocations = Array.from(
+      editor.getValue().matchAll(/\s*['"]?(?<key>.+?)['"]?:/g)
+    );
+    if (keyLocations.length === 0) {
+      return null;
+    }
+    const currentKeyLocation = keyLocations.filter((x) => x.index < currentOffset).last();
+    if (!currentKeyLocation) {
+      return null;
+    }
+    return (_b = (_a = currentKeyLocation.groups) == null ? void 0 : _a.key) != null ? _b : null;
+  }
+  /**
+   * Unsafe method
+   */
+  isIMEOn() {
+    var _a, _b, _c;
+    if (!this.unsafeApp.workspace.getActiveViewOfType(import_obsidian.MarkdownView)) {
+      return false;
+    }
+    const markdownView = this.unsafeApp.workspace.activeLeaf.view;
+    const cm5or6 = markdownView.editor.cm;
+    if (((_a = cm5or6 == null ? void 0 : cm5or6.inputState) == null ? void 0 : _a.composing) > 0) {
+      return true;
+    }
+    return !!((_c = (_b = cm5or6 == null ? void 0 : cm5or6.display) == null ? void 0 : _b.input) == null ? void 0 : _c.composing);
+  }
+  isMobile() {
+    return this.unsafeApp.isMobile;
+  }
+  async writeLog(log) {
+    await this.unsafeApp.vault.adapter.append((0, import_obsidian.normalizePath)("log.md"), log);
+  }
+  get useWikiLinks() {
+    return !this.unsafeApp.vault.config.useMarkdownLinks;
+  }
+  get newLinkFormat() {
+    var _a;
+    return (_a = this.unsafeApp.vault.config.newLinkFormat) != null ? _a : "shortest";
+  }
+};
+
+// src/setting/settings.ts
+var import_obsidian3 = require("obsidian");
+
+// src/keys.ts
+var import_obsidian2 = require("obsidian");
+var MOD = import_obsidian2.Platform.isMacOS ? "Cmd" : "Ctrl";
+var ALT = import_obsidian2.Platform.isMacOS ? "Option" : "Alt";
+function hotkey2String(hk) {
+  if (!hk) {
+    return "";
+  }
+  const hotkey = hk.key === " " ? "Space" : hk.key;
+  const mods = hk.modifiers.join(" ");
+  return mods ? `${mods} ${hotkey}` : hotkey;
+}
+function string2Hotkey(hotKey, hideHotkeyGuide) {
+  const keys = hotKey.split(" ");
+  if (keys.length === 0 || keys[0] === "") {
+    return null;
+  }
+  if (keys.length === 1) {
+    return {
+      modifiers: [],
+      key: keys[0].replace("Space", " "),
+      hideHotkeyGuide
+    };
+  }
+  return {
+    modifiers: keys.slice(0, -1),
+    key: keys.last().replace("Space", " "),
+    hideHotkeyGuide
+  };
+}
+
+// src/option/ColumnDelimiter.ts
+var _ColumnDelimiter = class _ColumnDelimiter {
+  constructor(name, value) {
+    this.name = name;
+    this.value = value;
+    _ColumnDelimiter._values.push(this);
+  }
+  static fromName(name) {
+    return _ColumnDelimiter._values.find((x) => x.name === name);
+  }
+  static values() {
+    return _ColumnDelimiter._values;
+  }
+};
+_ColumnDelimiter._values = [];
+_ColumnDelimiter.TAB = new _ColumnDelimiter("Tab", "	");
+_ColumnDelimiter.COMMA = new _ColumnDelimiter("Comma", ",");
+_ColumnDelimiter.PIPE = new _ColumnDelimiter("Pipe", "|");
+var ColumnDelimiter = _ColumnDelimiter;
+
+// src/util/path.ts
+function basename(path2, ext2) {
+  var _a, _b;
+  const name = (_b = (_a = path2.match(/.+[\\/]([^\\/]+)[\\/]?$/)) == null ? void 0 : _a[1]) != null ? _b : path2;
+  return ext2 && name.endsWith(ext2) ? name.replace(ext2, "") : name;
+}
+function dirname(path2) {
+  var _a, _b;
+  return (_b = (_a = path2.match(/(.+)[\\/].+$/)) == null ? void 0 : _a[1]) != null ? _b : ".";
+}
+function isURL(path2) {
+  return Boolean(path2.match(new RegExp("^https?://")));
+}
+var DEFAULT_HISTORIES_PATH = ".obsidian/plugins/various-complements/histories.json";
+
+// src/option/DescriptionOnSuggestion.ts
+var _DescriptionOnSuggestion = class _DescriptionOnSuggestion {
+  constructor(name, toDisplay) {
+    this.name = name;
+    this.toDisplay = toDisplay;
+    _DescriptionOnSuggestion._values.push(this);
+  }
+  static fromName(name) {
+    return _DescriptionOnSuggestion._values.find((x) => x.name === name);
+  }
+  static values() {
+    return _DescriptionOnSuggestion._values;
+  }
+};
+_DescriptionOnSuggestion._values = [];
+_DescriptionOnSuggestion.NONE = new _DescriptionOnSuggestion("None", () => null);
+_DescriptionOnSuggestion.SHORT = new _DescriptionOnSuggestion("Short", (word) => {
+  if (!word.description) {
+    return null;
+  }
+  return word.type === "customDictionary" ? word.description : basename(word.description);
+});
+_DescriptionOnSuggestion.FULL = new _DescriptionOnSuggestion(
+  "Full",
+  (word) => {
+    var _a;
+    return (_a = word.description) != null ? _a : null;
+  }
+);
+var DescriptionOnSuggestion = _DescriptionOnSuggestion;
+
+// src/model/Word.ts
+var _WordTypeMeta = class _WordTypeMeta {
+  constructor(type, priority, group) {
+    this.type = type;
+    this.priority = priority;
+    this.group = group;
+    _WordTypeMeta._values.push(this);
+    _WordTypeMeta._dict[type] = this;
+  }
+  static of(type) {
+    return _WordTypeMeta._dict[type];
+  }
+  static values() {
+    return _WordTypeMeta._values;
+  }
+};
+_WordTypeMeta._values = [];
+_WordTypeMeta._dict = {};
+_WordTypeMeta.FRONT_MATTER = new _WordTypeMeta(
+  "frontMatter",
+  100,
+  "frontMatter"
+);
+_WordTypeMeta.INTERNAL_LINK = new _WordTypeMeta(
+  "internalLink",
+  90,
+  "internalLink"
+);
+_WordTypeMeta.CUSTOM_DICTIONARY = new _WordTypeMeta(
+  "customDictionary",
+  80,
+  "suggestion"
+);
+_WordTypeMeta.CURRENT_FILE = new _WordTypeMeta(
+  "currentFile",
+  70,
+  "suggestion"
+);
+_WordTypeMeta.CURRENT_VAULT = new _WordTypeMeta(
+  "currentVault",
+  60,
+  "suggestion"
+);
+var WordTypeMeta = _WordTypeMeta;
 
 // src/provider/suggester.ts
 function suggestionUniqPredicate(a, b) {
@@ -1597,6 +1628,7 @@ var DEFAULT_SETTINGS = {
   delayMilliSeconds: 0,
   disableSuggestionsDuringImeOn: false,
   disableSuggestionsInMathBlock: false,
+  disableSuggestionsInCodeBlock: false,
   insertSpaceAfterCompletion: false,
   firstCharactersDisableSuggestions: ":/^",
   patternsToSuppressTrigger: ["^~~~.*", "^```.*"],
@@ -1867,11 +1899,23 @@ var VariousComplementsSettingTab = class extends import_obsidian3.PluginSettingT
         await this.plugin.saveSettings();
       });
     });
-    new import_obsidian3.Setting(containerEl).setName("Disable suggestions in the Math block").setDesc("It doesn't support the inline Math block.").addToggle((tc) => {
+    new import_obsidian3.Setting(containerEl).setName("Disable suggestions in the Math block").setDesc(
+      "Disables suggestions within math blocks. This setting does not apply to inline blocks."
+    ).addToggle((tc) => {
       tc.setValue(
         this.plugin.settings.disableSuggestionsInMathBlock
       ).onChange(async (value) => {
         this.plugin.settings.disableSuggestionsInMathBlock = value;
+        await this.plugin.saveSettings();
+      });
+    });
+    new import_obsidian3.Setting(containerEl).setName("Disable suggestions in the Code block").setDesc(
+      "Disables suggestions within code blocks. This setting does not apply to inline blocks."
+    ).addToggle((tc) => {
+      tc.setValue(
+        this.plugin.settings.disableSuggestionsInCodeBlock
+      ).onChange(async (value) => {
+        this.plugin.settings.disableSuggestionsInCodeBlock = value;
         await this.plugin.saveSettings();
       });
     });
@@ -4758,6 +4802,9 @@ var DefaultTokenizer = class extends AbstractTokenizer {
       word: content.slice(i),
       offset: i
     }));
+    if (results.length === 0) {
+      return [{ word: content, offset: 0 }];
+    }
     return results[0].offset === 0 ? results : [{ word: content, offset: 0 }, ...results];
   }
   // Diffirent with _tokenize of other tokenizers
@@ -7336,7 +7383,7 @@ var AutoCompleteSuggest = class _AutoCompleteSuggest extends import_obsidian7.Ed
     const currentFrontMatter = this.settings.enableFrontMatterComplement ? this.appHelper.getCurrentFrontMatter() : void 0;
     showDebugLog(`Current front matter is ${currentFrontMatter}`);
     const cl = this.appHelper.getCurrentLine(editor);
-    if (equalsAsLiterals(this.previousCurrentLine, cl) && !this.runManually && !currentFrontMatter) {
+    if (equalsAsLiterals(this.previousCurrentLine, cl) && !this.runManually && !currentFrontMatter && !this.isOpen) {
       this.previousCurrentLine = cl;
       onReturnNull("Don't show suggestions because there are no changes");
       return null;
@@ -7364,6 +7411,12 @@ var AutoCompleteSuggest = class _AutoCompleteSuggest extends import_obsidian7.Ed
       );
       return null;
     }
+    if (this.settings.disableSuggestionsInCodeBlock && this.appHelper.inCodeBlock(editor)) {
+      onReturnNull(
+        `Suggestions are disabled while the cursor is inside a Code block.`
+      );
+      return null;
+    }
     const tokens = this.tokenizer.tokenize(currentLineUntilCursor, true);
     showDebugLog(`tokens is ${tokens}`);
     const tokenized = this.tokenizer.recursiveTokenize(currentLineUntilCursor);
@@ -7378,7 +7431,7 @@ var AutoCompleteSuggest = class _AutoCompleteSuggest extends import_obsidian7.Ed
       return null;
     }
     const currentTokenSeparatedWhiteSpace = (_b = currentLineUntilCursor.split(" ").last()) != null ? _b : "";
-    if (currentTokenSeparatedWhiteSpace === this.pastCurrentTokenSeparatedWhiteSpace && !this.runManually) {
+    if (currentTokenSeparatedWhiteSpace === this.pastCurrentTokenSeparatedWhiteSpace && !this.runManually && !this.isOpen) {
       onReturnNull(
         `Don't show suggestions because currentTokenSeparatedWhiteSpace doesn't change`
       );

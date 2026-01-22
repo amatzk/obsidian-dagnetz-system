@@ -1,0 +1,18 @@
+{
+  "modelProvider": "builtin",
+  "modelId": "sentence-transformers/all-MiniLM-L6-v2",
+  "includeFrontmatter": false,
+  "showSourceChunk": false,
+  "useGPU": true,
+  "excludeFolderPatterns": [
+    "00_templates/",
+    "02_view/"
+  ],
+  "excludeRegexPatterns": [],
+  "regexpTestInputText": "",
+  "noteDisplayMode": "title",
+  "showAtBottom": false,
+  "sidebarResultCount": 10,
+  "bottomResultCount": 5,
+  "lastPluginVersion": "0.12.0"
+}

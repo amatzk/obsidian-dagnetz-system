@@ -33,29 +33,15 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 };
 
-// العربية
-var ar = {};
-
-// čeština
-var cz = {};
-
-// Dansk
-var da = {};
-
-// Deutsch
-var de = {};
-
 // English
 var en = {
-    // settings
-    IMAGE_TOOLKIT_SETTINGS_TITLE: 'Image Toolkit Settings',
     // >>>Common Settings:
-    COMMON_SETTINGS: 'Common Settings:',
     VIEW_MODE_NAME: 'Choose a mode to view images',
     VIEW_MODE_NORMAL: '🖼 Normal',
     VIEW_MODE_PIN: '📌 Pin',
+    RESET: 'reset to default',
     // >>>View Trigger Settings:
-    VIEW_TRIGGER_SETTINGS: 'View Trigger Settings:',
+    VIEW_TRIGGER_SETTINGS: 'View trigger',
     VIEW_IMAGE_GLOBAL_NAME: 'Click and view an image globally',
     VIEW_IMAGE_GLOBAL_DESC: 'You can zoom, rotate, drag, and invert it on the popup layer when clicking an image.',
     VIEW_IMAGE_IN_EDITOR_NAME: 'Click and view an image in the Editor Area',
@@ -68,7 +54,7 @@ var en = {
     VIEW_IMAGE_OTHER_NAME: 'Click and view in the other areas except the above',
     VIEW_IMAGE_OTHER_DESC: 'Except for the above mentioned, it also supports other areas, like some modal user interface components.',
     // >>> PIN_MODE_SETTINGS
-    PIN_MODE_SETTINGS: "Pin Mode Settings:",
+    PIN_MODE_SETTINGS: "Pin mode",
     PIN_MODE_NAME: "📌 Pin an image",
     PIN_MODE_DESC: "You can pin an image onto the top of the screen. And have more options by right click. (press Esc to close the image where your mouse cursor is hovering)",
     PIN_MAXIMUM_NAME: "The maximum images you can pin",
@@ -76,7 +62,7 @@ var en = {
     PIN_COVER_DESC: "After those pinned images reach maximum, you can cover the earliest pinned image when you click an image once again.",
     PIN_MAXIMUM_NOTICE: "Exceeded maximum images you can pin (non cover mode)",
     // >>>View Detail Settings:
-    VIEW_DETAILS_SETTINGS: 'View Detail Settings:',
+    VIEW_DETAILS_SETTINGS: 'View details',
     IMAGE_MOVE_SPEED_NAME: 'Set the moving speed of the image',
     IMAGE_MOVE_SPEED_DESC: 'When you move an image on the popup layer by keyboard (up, down, left, right), the moving speed of the image can be set here.',
     IMAGE_TIP_TOGGLE_NAME: "Display the image's zoom number",
@@ -86,14 +72,14 @@ var en = {
     FIT: 'Fit',
     FILL: 'Fill',
     STRETCH: 'Stretch',
-    IMG_VIEW_BACKGROUND_COLOR_NAME: "Set the background color of the previewed image (Only support the image with transparent background)",
+    IMG_VIEW_BACKGROUND_COLOR_NAME: "Background color of the previewed image (Only support the image with transparent background)",
     // >>>Image Border Settings:
-    IMAGE_BORDER_SETTINGS: 'Image Border Settings:',
+    IMAGE_BORDER_SETTINGS: 'Image border',
     IMAGE_BORDER_TOGGLE_NAME: "Display the image's border",
     IMAGE_BORDER_TOGGLE_DESC: "The clicked image's border can be displayed after you exit previewing and close the popup layer.",
-    IMAGE_BORDER_WIDTH_NAME: "Set the image's border width",
-    IMAGE_BORDER_STYLE_NAME: "Set the image's border style",
-    IMAGE_BORDER_COLOR_NAME: "Set the image's border color",
+    IMAGE_BORDER_WIDTH_NAME: "Image border width",
+    IMAGE_BORDER_STYLE_NAME: "Image border style",
+    IMAGE_BORDER_COLOR_NAME: "Image border color",
     // IMG_BORDER_WIDTH options:
     THIN: 'thin',
     MEDIUM: 'medium',
@@ -129,23 +115,23 @@ var en = {
     GOLD: 'gold',
     YELLOW: 'yellow',
     // >>>Gallery Navbar Settings:
-    GALLERY_NAVBAR_SETTINGS: 'Gallery Navbar Settings (Experimental):',
+    GALLERY_NAVBAR_SETTINGS: 'Gallery navbar (experimental)',
     GALLERY_NAVBAR_TOGGLE_NAME: "Display gallery navbar",
     GALLERY_NAVBAR_TOGGLE_DESC: "All of the images in the current pane view can be displayed at the bottom of the popup layer.",
-    GALLERY_NAVBAR_DEFAULT_COLOR_NAME: "Set the background color of the gallery navbar (default state)",
-    GALLERY_NAVBAR_HOVER_COLOR_NAME: "Set the background color of the gallery navbar (hovering state)",
+    GALLERY_NAVBAR_DEFAULT_COLOR_NAME: "Background color of the gallery navbar (default state)",
+    GALLERY_NAVBAR_HOVER_COLOR_NAME: "Background color of the gallery navbar (hovering state)",
     GALLERY_IMG_BORDER_TOGGLE_NAME: "Display the selected image on the gallery navbar",
     GALLERY_IMG_BORDER_TOGGLE_DESC: "When you select an image, the image's border will be displayed, so you can know which image is currently active.",
-    GALLERY_IMG_BORDER_ACTIVE_COLOR_NAME: 'Set the border color of the selected image',
+    GALLERY_IMG_BORDER_ACTIVE_COLOR_NAME: 'Border color of the selected image',
     // >>>HOTKEYS_SETTINGS:
-    HOTKEY_SETTINGS: "Hotkey Settings:",
+    HOTKEY_SETTINGS: "Hotkeys",
     HOTKEY_SETTINGS_DESC: "📢 You cannot set the same hotkey for 'Move the image' and 'Switch the image' at the same time. (NOT SUPPORT in Pin Mode)",
-    MOVE_THE_IMAGE_NAME: "Set the hotkey for moving the image",
+    MOVE_THE_IMAGE_NAME: "Hotkey for moving the image",
     MOVE_THE_IMAGE_DESC: "You can move the image on the popup layer by hotkey.",
-    SWITCH_THE_IMAGE_NAME: "Set the hotkey for switching the image",
+    SWITCH_THE_IMAGE_NAME: "Hotkey for switching the image",
     SWITCH_THE_IMAGE_DESC: "You can switch to the previous/next image on the gallery navbar by hotkey. (NOTE: You need to turn on 'Display gallery navbar' first, if you wanna use this hotkey.)",
     DOUBLE_CLICK_TOOLBAR_NAME: "Double click",
-    VIEW_TRIGGER_HOTKEY_NAME: "Set the hotkey for triggering viewing an image",
+    VIEW_TRIGGER_HOTKEY_NAME: "Hotkey for triggering viewing an image",
     VIEW_TRIGGER_HOTKEY_DESC: "When you set 'None', you can directly click and preview an image without holding any modifier keys; otherwise, you must hold the configured modifier keys to click and preview an image.",
     // MODIFIER_HOTKEYS
     NONE: "None",
@@ -174,66 +160,13 @@ var en = {
     COPY_IMAGE_ERROR: 'Fail to copy the image!'
 };
 
-// British English
-var enGB = {};
-
-// Español
-var es = {};
-
-// français
-var fr = {};
-
-// हिन्दी
-var hi = {};
-
-// Bahasa Indonesia
-var id = {};
-
-// Italiano
-var it = {};
-
-// 日本語
-var ja = {};
-
-// 한국어
-var ko = {};
-
-// Nederlands
-var nl = {};
-
-// Norsk
-var no = {};
-
-// język polski	
-var pl = {};
-
-// Português
-var pt = {};
-
-// Português do Brasil
-// Brazilian Portuguese
-var ptBR = {};
-
-// Română
-var ro = {};
-
-// русский
-var ru = {};
-
-// Türkçe
-var tr = {};
-
 // 简体中文
 var zhCN = {
-    // settings
-    IMAGE_TOOLKIT_SETTINGS_TITLE: "Image Toolkit 设置",
-    // >>>Common Settings:
-    COMMON_SETTINGS: '通用设置：',
     VIEW_MODE_NAME: '选择查看模式',
     VIEW_MODE_NORMAL: '🖼 普通',
     VIEW_MODE_PIN: '📌 贴图',
     // >>> 预览触发配置：
-    VIEW_TRIGGER_SETTINGS: '预览触发配置：',
+    VIEW_TRIGGER_SETTINGS: '预览触发配置',
     VIEW_IMAGE_GLOBAL_NAME: '支持全局预览图片',
     VIEW_IMAGE_GLOBAL_DESC: '开启后，在任何地方点击图片都可以弹出预览界面，可对图片进行缩放、旋转、拖动、和反色等。',
     VIEW_IMAGE_IN_EDITOR_NAME: '支持在编辑区域预览图片',
@@ -246,7 +179,7 @@ var zhCN = {
     VIEW_IMAGE_OTHER_NAME: '支持除上述其他地方来预览图片',
     VIEW_IMAGE_OTHER_DESC: '除上述支持范围外，还支持一些其他区域，如Modal用户界面组件。',
     // >>> PIN_MODE_SETTINGS
-    PIN_MODE_SETTINGS: "贴图模式设置：",
+    PIN_MODE_SETTINGS: "贴图模式设置",
     PIN_MODE_NAME: "📌 将所点击的图片贴到屏幕上",
     PIN_MODE_DESC: "你可以将当前所点击的图片贴到屏幕上，并且可以通过右击图片选择更多操作（按 Esc 关闭已贴图片的展示）",
     PIN_MAXIMUM_NAME: "最大贴图数量",
@@ -254,7 +187,7 @@ var zhCN = {
     PIN_COVER_DESC: "当贴图数量达到最大值后，此时再次点击图片，该图片会覆盖最早弹出的那个贴图。",
     PIN_MAXIMUM_NOTICE: "超过最大Pin图设置（非覆盖模式）",
     // >>>查看细节设置：
-    VIEW_DETAILS_SETTINGS: '查看细节设置：',
+    VIEW_DETAILS_SETTINGS: '查看细节设置',
     IMAGE_MOVE_SPEED_NAME: '图片移动速度设置',
     IMAGE_MOVE_SPEED_DESC: '当使用键盘（上、下、左、右）移动图片时，可对图片移动速度进行设置。',
     IMAGE_TIP_TOGGLE_NAME: "展示缩放比例提示",
@@ -266,7 +199,7 @@ var zhCN = {
     STRETCH: '拉伸',
     IMG_VIEW_BACKGROUND_COLOR_NAME: "设置预览图片的背景色（仅对透明背景的图片生效）",
     // >>>图片边框设置：
-    IMAGE_BORDER_SETTINGS: '图片边框设置：',
+    IMAGE_BORDER_SETTINGS: '图片边框设置',
     IMAGE_BORDER_TOGGLE_NAME: "展示被点击图片的边框",
     IMAGE_BORDER_TOGGLE_DESC: "当离开图片预览和关闭弹出层后，突出展示被点击图片的边框。",
     IMAGE_BORDER_WIDTH_NAME: "设置图片边框宽度",
@@ -307,7 +240,7 @@ var zhCN = {
     GOLD: '金色',
     YELLOW: '黄色',
     // >>>Gallery Navbar Settings:
-    GALLERY_NAVBAR_SETTINGS: '图片导航设置 (体验版):',
+    GALLERY_NAVBAR_SETTINGS: '图片导航设置 (体验版)',
     GALLERY_NAVBAR_TOGGLE_NAME: "展示图片导航",
     GALLERY_NAVBAR_TOGGLE_DESC: "当前文档的所有图片会展示在弹出层的底部，可随意切换展示不同图片。",
     GALLERY_NAVBAR_DEFAULT_COLOR_NAME: "设置图片导航底栏背景色（默认展示）",
@@ -316,7 +249,7 @@ var zhCN = {
     GALLERY_IMG_BORDER_TOGGLE_DESC: "当你选中正查看某一图片，对应图片导航底栏上将突出显示该缩略图片的边框。",
     GALLERY_IMG_BORDER_ACTIVE_COLOR_NAME: '设置被选中图片的边框色',
     // >>>HOTKEYS_SETTINGS:
-    HOTKEY_SETTINGS: "快捷键设置:",
+    HOTKEY_SETTINGS: "快捷键设置",
     HOTKEY_SETTINGS_DESC: "📢  你无法为'移动图片'和'切换图片'设置相同的快捷键。（不支持贴图模式）",
     MOVE_THE_IMAGE_NAME: "为移动图片设置快捷键",
     MOVE_THE_IMAGE_DESC: "你可以利用快捷键来移动弹出层上的图片。",
@@ -347,8 +280,6 @@ var zhCN = {
 
 // 繁體中文
 var zhTW = {
-    // settings
-    IMAGE_TOOLKIT_SETTINGS_TITLE: "image toolkit 設定",
     // toolbar icon title
     ZOOM_IN: "放大",
     ZOOM_OUT: "縮小",
@@ -364,27 +295,7 @@ var zhTW = {
 };
 
 const localeMap = {
-    ar,
-    cs: cz,
-    da,
-    de,
     en,
-    "en-gb": enGB,
-    es,
-    fr,
-    hi,
-    id,
-    it,
-    ja,
-    ko,
-    nl,
-    nn: no,
-    pl,
-    pt,
-    "pt-br": ptBR,
-    ro,
-    ru,
-    tr,
     "zh-cn": zhCN,
     "zh-tw": zhTW,
 };
@@ -591,24 +502,6 @@ const SWITCH_THE_IMAGE = {
 };
 const IMG_DEFAULT_BACKGROUND_COLOR = '#00000000';
 
-function getDefaultExportFromCjs (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
-}
-
-function createCommonjsModule(fn) {
-  var module = { exports: {} };
-	return fn(module, module.exports), module.exports;
-}
-
-/*! Pickr 1.9.1 MIT | https://github.com/Simonwep/pickr */
-
-var pickr_min = createCommonjsModule(function (module, exports) {
-!function(t,e){module.exports=e();}(self,(()=>(()=>{var t={d:(e,o)=>{for(var n in o)t.o(o,n)&&!t.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:o[n]});},o:(t,e)=>Object.prototype.hasOwnProperty.call(t,e),r:t=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0});}},e={};t.d(e,{default:()=>E});var o={};function n(t,e,o,n,i={}){e instanceof HTMLCollection||e instanceof NodeList?e=Array.from(e):Array.isArray(e)||(e=[e]),Array.isArray(o)||(o=[o]);for(const s of e)for(const e of o)s[t](e,n,{capture:!1,...i});return Array.prototype.slice.call(arguments,1)}t.r(o),t.d(o,{adjustableInputNumbers:()=>p,createElementFromString:()=>r,createFromTemplate:()=>a,eventPath:()=>l,off:()=>s,on:()=>i,resolveElement:()=>c});const i=n.bind(null,"addEventListener"),s=n.bind(null,"removeEventListener");function r(t){const e=document.createElement("div");return e.innerHTML=t.trim(),e.firstElementChild}function a(t){const e=(t,e)=>{const o=t.getAttribute(e);return t.removeAttribute(e),o},o=(t,n={})=>{const i=e(t,":obj"),s=e(t,":ref"),r=i?n[i]={}:n;s&&(n[s]=t);for(const n of Array.from(t.children)){const t=e(n,":arr"),i=o(n,t?{}:r);t&&(r[t]||(r[t]=[])).push(Object.keys(i).length?i:n);}return n};return o(r(t))}function l(t){let e=t.path||t.composedPath&&t.composedPath();if(e)return e;let o=t.target.parentElement;for(e=[t.target,o];o=o.parentElement;)e.push(o);return e.push(document,window),e}function c(t){return t instanceof Element?t:"string"==typeof t?t.split(/>>/g).reduce(((t,e,o,n)=>(t=t.querySelector(e),o<n.length-1?t.shadowRoot:t)),document):null}function p(t,e=(t=>t)){function o(o){const n=[.001,.01,.1][Number(o.shiftKey||2*o.ctrlKey)]*(o.deltaY<0?1:-1);let i=0,s=t.selectionStart;t.value=t.value.replace(/[\d.]+/g,((t,o)=>o<=s&&o+t.length>=s?(s=o,e(Number(t),n,i)):(i++,t))),t.focus(),t.setSelectionRange(s,s),o.preventDefault(),t.dispatchEvent(new Event("input"));}i(t,"focus",(()=>i(window,"wheel",o,{passive:!1}))),i(t,"blur",(()=>s(window,"wheel",o)));}const{min:u,max:h,floor:d,round:m}=Math;function f(t,e,o){e/=100,o/=100;const n=d(t=t/360*6),i=t-n,s=o*(1-e),r=o*(1-i*e),a=o*(1-(1-i)*e),l=n%6;return [255*[o,r,s,s,a,o][l],255*[a,o,o,r,s,s][l],255*[s,s,a,o,o,r][l]]}function v(t,e,o){const n=(2-(e/=100))*(o/=100)/2;return 0!==n&&(e=1===n?0:n<.5?e*o/(2*n):e*o/(2-2*n)),[t,100*e,100*n]}function b(t,e,o){const n=u(t/=255,e/=255,o/=255),i=h(t,e,o),s=i-n;let r,a;if(0===s)r=a=0;else {a=s/i;const n=((i-t)/6+s/2)/s,l=((i-e)/6+s/2)/s,c=((i-o)/6+s/2)/s;t===i?r=c-l:e===i?r=1/3+n-c:o===i&&(r=2/3+l-n),r<0?r+=1:r>1&&(r-=1);}return [360*r,100*a,100*i]}function y(t,e,o,n){e/=100,o/=100;return [...b(255*(1-u(1,(t/=100)*(1-(n/=100))+n)),255*(1-u(1,e*(1-n)+n)),255*(1-u(1,o*(1-n)+n)))]}function g(t,e,o){e/=100;const n=2*(e*=(o/=100)<.5?o:1-o)/(o+e)*100,i=100*(o+e);return [t,isNaN(n)?0:n,i]}function _(t){return b(...t.match(/.{2}/g).map((t=>parseInt(t,16))))}function w(t){t=t.match(/^[a-zA-Z]+$/)?function(t){if("black"===t.toLowerCase())return "#000";const e=document.createElement("canvas").getContext("2d");return e.fillStyle=t,"#000"===e.fillStyle?null:e.fillStyle}(t):t;const e={cmyk:/^cmyk\D+([\d.]+)\D+([\d.]+)\D+([\d.]+)\D+([\d.]+)/i,rgba:/^rgba?\D+([\d.]+)(%?)\D+([\d.]+)(%?)\D+([\d.]+)(%?)\D*?(([\d.]+)(%?)|$)/i,hsla:/^hsla?\D+([\d.]+)\D+([\d.]+)\D+([\d.]+)\D*?(([\d.]+)(%?)|$)/i,hsva:/^hsva?\D+([\d.]+)\D+([\d.]+)\D+([\d.]+)\D*?(([\d.]+)(%?)|$)/i,hexa:/^#?(([\dA-Fa-f]{3,4})|([\dA-Fa-f]{6})|([\dA-Fa-f]{8}))$/i},o=t=>t.map((t=>/^(|\d+)\.\d+|\d+$/.test(t)?Number(t):void 0));let n;t:for(const i in e)if(n=e[i].exec(t))switch(i){case"cmyk":{const[,t,e,s,r]=o(n);if(t>100||e>100||s>100||r>100)break t;return {values:y(t,e,s,r),type:i}}case"rgba":{let[,t,,e,,s,,,r]=o(n);if(t="%"===n[2]?t/100*255:t,e="%"===n[4]?e/100*255:e,s="%"===n[6]?s/100*255:s,r="%"===n[9]?r/100:r,t>255||e>255||s>255||r<0||r>1)break t;return {values:[...b(t,e,s),r],a:r,type:i}}case"hexa":{let[,t]=n;4!==t.length&&3!==t.length||(t=t.split("").map((t=>t+t)).join(""));const e=t.substring(0,6);let o=t.substring(6);return o=o?parseInt(o,16)/255:void 0,{values:[..._(e),o],a:o,type:i}}case"hsla":{let[,t,e,s,,r]=o(n);if(r="%"===n[6]?r/100:r,t>360||e>100||s>100||r<0||r>1)break t;return {values:[...g(t,e,s),r],a:r,type:i}}case"hsva":{let[,t,e,s,,r]=o(n);if(r="%"===n[6]?r/100:r,t>360||e>100||s>100||r<0||r>1)break t;return {values:[t,e,s,r],a:r,type:i}}}return {values:null,type:null}}function A(t=0,e=0,o=0,n=1){const i=(t,e)=>(o=-1)=>e(~o?t.map((t=>Number(t.toFixed(o)))):t),s={h:t,s:e,v:o,a:n,toHSVA(){const t=[s.h,s.s,s.v,s.a];return t.toString=i(t,(t=>`hsva(${t[0]}, ${t[1]}%, ${t[2]}%, ${s.a})`)),t},toHSLA(){const t=[...v(s.h,s.s,s.v),s.a];return t.toString=i(t,(t=>`hsla(${t[0]}, ${t[1]}%, ${t[2]}%, ${s.a})`)),t},toRGBA(){const t=[...f(s.h,s.s,s.v),s.a];return t.toString=i(t,(t=>`rgba(${t[0]}, ${t[1]}, ${t[2]}, ${s.a})`)),t},toCMYK(){const t=function(t,e,o){const n=f(t,e,o),i=n[0]/255,s=n[1]/255,r=n[2]/255,a=u(1-i,1-s,1-r);return [100*(1===a?0:(1-i-a)/(1-a)),100*(1===a?0:(1-s-a)/(1-a)),100*(1===a?0:(1-r-a)/(1-a)),100*a]}(s.h,s.s,s.v);return t.toString=i(t,(t=>`cmyk(${t[0]}%, ${t[1]}%, ${t[2]}%, ${t[3]}%)`)),t},toHEXA(){const t=function(t,e,o){return f(t,e,o).map((t=>m(t).toString(16).padStart(2,"0")))}(s.h,s.s,s.v),e=s.a>=1?"":Number((255*s.a).toFixed(0)).toString(16).toUpperCase().padStart(2,"0");return e&&t.push(e),t.toString=()=>`#${t.join("").toUpperCase()}`,t},clone:()=>A(s.h,s.s,s.v,s.a)};return s}const $=t=>Math.max(Math.min(t,1),0);function C(t){const e={options:Object.assign({lock:null,onchange:()=>0,onstop:()=>0},t),_keyboard(t){const{options:o}=e,{type:n,key:i}=t;if(document.activeElement===o.wrapper){const{lock:o}=e.options,s="ArrowUp"===i,r="ArrowRight"===i,a="ArrowDown"===i,l="ArrowLeft"===i;if("keydown"===n&&(s||r||a||l)){let n=0,i=0;"v"===o?n=s||r?1:-1:"h"===o?n=s||r?-1:1:(i=s?-1:a?1:0,n=l?-1:r?1:0),e.update($(e.cache.x+.01*n),$(e.cache.y+.01*i)),t.preventDefault();}else i.startsWith("Arrow")&&(e.options.onstop(),t.preventDefault());}},_tapstart(t){i(document,["mouseup","touchend","touchcancel"],e._tapstop),i(document,["mousemove","touchmove"],e._tapmove),t.cancelable&&t.preventDefault(),e._tapmove(t);},_tapmove(t){const{options:o,cache:n}=e,{lock:i,element:s,wrapper:r}=o,a=r.getBoundingClientRect();let l=0,c=0;if(t){const e=t&&t.touches&&t.touches[0];l=t?(e||t).clientX:0,c=t?(e||t).clientY:0,l<a.left?l=a.left:l>a.left+a.width&&(l=a.left+a.width),c<a.top?c=a.top:c>a.top+a.height&&(c=a.top+a.height),l-=a.left,c-=a.top;}else n&&(l=n.x*a.width,c=n.y*a.height);"h"!==i&&(s.style.left=`calc(${l/a.width*100}% - ${s.offsetWidth/2}px)`),"v"!==i&&(s.style.top=`calc(${c/a.height*100}% - ${s.offsetHeight/2}px)`),e.cache={x:l/a.width,y:c/a.height};const p=$(l/a.width),u=$(c/a.height);switch(i){case"v":return o.onchange(p);case"h":return o.onchange(u);default:return o.onchange(p,u)}},_tapstop(){e.options.onstop(),s(document,["mouseup","touchend","touchcancel"],e._tapstop),s(document,["mousemove","touchmove"],e._tapmove);},trigger(){e._tapmove();},update(t=0,o=0){const{left:n,top:i,width:s,height:r}=e.options.wrapper.getBoundingClientRect();"h"===e.options.lock&&(o=t),e._tapmove({clientX:n+s*t,clientY:i+r*o});},destroy(){const{options:t,_tapstart:o,_keyboard:n}=e;s(document,["keydown","keyup"],n),s([t.wrapper,t.element],"mousedown",o),s([t.wrapper,t.element],"touchstart",o,{passive:!1});}},{options:o,_tapstart:n,_keyboard:r}=e;return i([o.wrapper,o.element],"mousedown",n),i([o.wrapper,o.element],"touchstart",n,{passive:!1}),i(document,["keydown","keyup"],r),e}function k(t={}){t=Object.assign({onchange:()=>0,className:"",elements:[]},t);const e=i(t.elements,"click",(e=>{t.elements.forEach((o=>o.classList[e.target===o?"add":"remove"](t.className))),t.onchange(e),e.stopPropagation();}));return {destroy:()=>s(...e)}}const S={variantFlipOrder:{start:"sme",middle:"mse",end:"ems"},positionFlipOrder:{top:"tbrl",right:"rltb",bottom:"btrl",left:"lrbt"},position:"bottom",margin:8,padding:0},O=(t,e,o)=>{const n="object"!=typeof t||t instanceof HTMLElement?{reference:t,popper:e,...o}:t;return {update(t=n){const{reference:e,popper:o}=Object.assign(n,t);if(!o||!e)throw new Error("Popper- or reference-element missing.");return ((t,e,o)=>{const{container:n,arrow:i,margin:s,padding:r,position:a,variantFlipOrder:l,positionFlipOrder:c}={container:document.documentElement.getBoundingClientRect(),...S,...o},{left:p,top:u}=e.style;e.style.left="0",e.style.top="0";const h=t.getBoundingClientRect(),d=e.getBoundingClientRect(),m={t:h.top-d.height-s,b:h.bottom+s,r:h.right+s,l:h.left-d.width-s},f={vs:h.left,vm:h.left+h.width/2-d.width/2,ve:h.left+h.width-d.width,hs:h.top,hm:h.bottom-h.height/2-d.height/2,he:h.bottom-d.height},[v,b="middle"]=a.split("-"),y=c[v],g=l[b],{top:_,left:w,bottom:A,right:$}=n;for(const t of y){const o="t"===t||"b"===t;let n=m[t];const[s,a]=o?["top","left"]:["left","top"],[l,c]=o?[d.height,d.width]:[d.width,d.height],[p,u]=o?[A,$]:[$,A],[v,b]=o?[_,w]:[w,_];if(!(n<v||n+l+r>p))for(const p of g){let m=f[(o?"v":"h")+p];if(!(m<b||m+c+r>u)){if(m-=d[a],n-=d[s],e.style[a]=`${m}px`,e.style[s]=`${n}px`,i){const e=o?h.width/2:h.height/2,r=c/2,u=e>r,d=m+{s:u?r:e,m:r,e:u?r:c-e}[p],f=n+{t:l,b:0,r:0,l}[t];i.style[a]=`${d}px`,i.style[s]=`${f}px`;}return t+p}}}return e.style.left=p,e.style.top=u,null})(e,o,n)}}};class E{static utils=o;static version="1.9.1";static I18N_DEFAULTS={"ui:dialog":"color picker dialog","btn:toggle":"toggle color picker dialog","btn:swatch":"color swatch","btn:last-color":"use previous color","btn:save":"Save","btn:cancel":"Cancel","btn:clear":"Clear","aria:btn:save":"save and close","aria:btn:cancel":"cancel and close","aria:btn:clear":"clear and close","aria:input":"color input field","aria:palette":"color selection area","aria:hue":"hue selection slider","aria:opacity":"selection slider"};static DEFAULT_OPTIONS={appClass:null,theme:"classic",useAsButton:!1,padding:8,disabled:!1,comparison:!0,closeOnScroll:!1,outputPrecision:0,lockOpacity:!1,autoReposition:!0,container:"body",components:{interaction:{}},i18n:{},swatches:null,inline:!1,sliders:null,default:"#42445a",defaultRepresentation:null,position:"bottom-middle",adjustableNumbers:!0,showAlways:!1,closeWithKey:"Escape"};_initializingActive=!0;_recalc=!0;_nanopop=null;_root=null;_color=A();_lastColor=A();_swatchColors=[];_setupAnimationFrame=null;_eventListener={init:[],save:[],hide:[],show:[],clear:[],change:[],changestop:[],cancel:[],swatchselect:[]};constructor(t){this.options=t=Object.assign({...E.DEFAULT_OPTIONS},t);const{swatches:e,components:o,theme:n,sliders:i,lockOpacity:s,padding:r}=t;["nano","monolith"].includes(n)&&!i&&(t.sliders="h"),o.interaction||(o.interaction={});const{preview:a,opacity:l,hue:c,palette:p}=o;o.opacity=!s&&l,o.palette=p||a||l||c,this._preBuild(),this._buildComponents(),this._bindEvents(),this._finalBuild(),e&&e.length&&e.forEach((t=>this.addSwatch(t)));const{button:u,app:h}=this._root;this._nanopop=O(u,h,{margin:r}),u.setAttribute("role","button"),u.setAttribute("aria-label",this._t("btn:toggle"));const d=this;this._setupAnimationFrame=requestAnimationFrame((function e(){if(!h.offsetWidth)return requestAnimationFrame(e);d.setColor(t.default),d._rePositioningPicker(),t.defaultRepresentation&&(d._representation=t.defaultRepresentation,d.setColorRepresentation(d._representation)),t.showAlways&&d.show(),d._initializingActive=!1,d._emit("init");}));}static create=t=>new E(t);_preBuild(){const{options:t}=this;for(const e of ["el","container"])t[e]=c(t[e]);this._root=(t=>{const{components:e,useAsButton:o,inline:n,appClass:i,theme:s,lockOpacity:r}=t.options,l=t=>t?"":'style="display:none" hidden',c=e=>t._t(e),p=a(`\n      <div :ref="root" class="pickr">\n\n        ${o?"":'<button type="button" :ref="button" class="pcr-button"></button>'}\n\n        <div :ref="app" class="pcr-app ${i||""}" data-theme="${s}" ${n?'style="position: unset"':""} aria-label="${c("ui:dialog")}" role="window">\n          <div class="pcr-selection" ${l(e.palette)}>\n            <div :obj="preview" class="pcr-color-preview" ${l(e.preview)}>\n              <button type="button" :ref="lastColor" class="pcr-last-color" aria-label="${c("btn:last-color")}"></button>\n              <div :ref="currentColor" class="pcr-current-color"></div>\n            </div>\n\n            <div :obj="palette" class="pcr-color-palette">\n              <div :ref="picker" class="pcr-picker"></div>\n              <div :ref="palette" class="pcr-palette" tabindex="0" aria-label="${c("aria:palette")}" role="listbox"></div>\n            </div>\n\n            <div :obj="hue" class="pcr-color-chooser" ${l(e.hue)}>\n              <div :ref="picker" class="pcr-picker"></div>\n              <div :ref="slider" class="pcr-hue pcr-slider" tabindex="0" aria-label="${c("aria:hue")}" role="slider"></div>\n            </div>\n\n            <div :obj="opacity" class="pcr-color-opacity" ${l(e.opacity)}>\n              <div :ref="picker" class="pcr-picker"></div>\n              <div :ref="slider" class="pcr-opacity pcr-slider" tabindex="0" aria-label="${c("aria:opacity")}" role="slider"></div>\n            </div>\n          </div>\n\n          <div class="pcr-swatches ${e.palette?"":"pcr-last"}" :ref="swatches"></div>\n\n          <div :obj="interaction" class="pcr-interaction" ${l(Object.keys(e.interaction).length)}>\n            <input :ref="result" class="pcr-result" type="text" spellcheck="false" ${l(e.interaction.input)} aria-label="${c("aria:input")}">\n\n            <input :arr="options" class="pcr-type" data-type="HEXA" value="${r?"HEX":"HEXA"}" type="button" ${l(e.interaction.hex)}>\n            <input :arr="options" class="pcr-type" data-type="RGBA" value="${r?"RGB":"RGBA"}" type="button" ${l(e.interaction.rgba)}>\n            <input :arr="options" class="pcr-type" data-type="HSLA" value="${r?"HSL":"HSLA"}" type="button" ${l(e.interaction.hsla)}>\n            <input :arr="options" class="pcr-type" data-type="HSVA" value="${r?"HSV":"HSVA"}" type="button" ${l(e.interaction.hsva)}>\n            <input :arr="options" class="pcr-type" data-type="CMYK" value="CMYK" type="button" ${l(e.interaction.cmyk)}>\n\n            <input :ref="save" class="pcr-save" value="${c("btn:save")}" type="button" ${l(e.interaction.save)} aria-label="${c("aria:btn:save")}">\n            <input :ref="cancel" class="pcr-cancel" value="${c("btn:cancel")}" type="button" ${l(e.interaction.cancel)} aria-label="${c("aria:btn:cancel")}">\n            <input :ref="clear" class="pcr-clear" value="${c("btn:clear")}" type="button" ${l(e.interaction.clear)} aria-label="${c("aria:btn:clear")}">\n          </div>\n        </div>\n      </div>\n    `),u=p.interaction;return u.options.find((t=>!t.hidden&&!t.classList.add("active"))),u.type=()=>u.options.find((t=>t.classList.contains("active"))),p})(this),t.useAsButton&&(this._root.button=t.el),t.container.appendChild(this._root.root);}_finalBuild(){const t=this.options,e=this._root;if(t.container.removeChild(e.root),t.inline){const o=t.el.parentElement;t.el.nextSibling?o.insertBefore(e.app,t.el.nextSibling):o.appendChild(e.app);}else t.container.appendChild(e.app);t.useAsButton?t.inline&&t.el.remove():t.el.parentNode.replaceChild(e.root,t.el),t.disabled&&this.disable(),t.comparison||(e.button.style.transition="none",t.useAsButton||(e.preview.lastColor.style.transition="none")),this.hide();}_buildComponents(){const t=this,e=this.options.components,o=(t.options.sliders||"v").repeat(2),[n,i]=o.match(/^[vh]+$/g)?o:[],s=()=>this._color||(this._color=this._lastColor.clone()),r={palette:C({element:t._root.palette.picker,wrapper:t._root.palette.palette,onstop:()=>t._emit("changestop","slider",t),onchange(o,n){if(!e.palette)return;const i=s(),{_root:r,options:a}=t,{lastColor:l,currentColor:c}=r.preview;t._recalc&&(i.s=100*o,i.v=100-100*n,i.v<0&&(i.v=0),t._updateOutput("slider"));const p=i.toRGBA().toString(0);this.element.style.background=p,this.wrapper.style.background=`\n                        linear-gradient(to top, rgba(0, 0, 0, ${i.a}), transparent),\n                        linear-gradient(to left, hsla(${i.h}, 100%, 50%, ${i.a}), rgba(255, 255, 255, ${i.a}))\n                    `,a.comparison?a.useAsButton||t._lastColor||l.style.setProperty("--pcr-color",p):(r.button.style.setProperty("--pcr-color",p),r.button.classList.remove("clear"));const u=i.toHEXA().toString();for(const{el:e,color:o}of t._swatchColors)e.classList[u===o.toHEXA().toString()?"add":"remove"]("pcr-active");c.style.setProperty("--pcr-color",p);}}),hue:C({lock:"v"===i?"h":"v",element:t._root.hue.picker,wrapper:t._root.hue.slider,onstop:()=>t._emit("changestop","slider",t),onchange(o){if(!e.hue||!e.palette)return;const n=s();t._recalc&&(n.h=360*o),this.element.style.backgroundColor=`hsl(${n.h}, 100%, 50%)`,r.palette.trigger();}}),opacity:C({lock:"v"===n?"h":"v",element:t._root.opacity.picker,wrapper:t._root.opacity.slider,onstop:()=>t._emit("changestop","slider",t),onchange(o){if(!e.opacity||!e.palette)return;const n=s();t._recalc&&(n.a=Math.round(100*o)/100),this.element.style.background=`rgba(0, 0, 0, ${n.a})`,r.palette.trigger();}}),selectable:k({elements:t._root.interaction.options,className:"active",onchange(e){t._representation=e.target.getAttribute("data-type").toUpperCase(),t._recalc&&t._updateOutput("swatch");}})};this._components=r;}_bindEvents(){const{_root:t,options:e}=this,o=[i(t.interaction.clear,"click",(()=>this._clearColor())),i([t.interaction.cancel,t.preview.lastColor],"click",(()=>{this.setHSVA(...(this._lastColor||this._color).toHSVA(),!0),this._emit("cancel");})),i(t.interaction.save,"click",(()=>{!this.applyColor()&&!e.showAlways&&this.hide();})),i(t.interaction.result,["keyup","input"],(t=>{this.setColor(t.target.value,!0)&&!this._initializingActive&&(this._emit("change",this._color,"input",this),this._emit("changestop","input",this)),t.stopImmediatePropagation();})),i(t.interaction.result,["focus","blur"],(t=>{this._recalc="blur"===t.type,this._recalc&&this._updateOutput(null);})),i([t.palette.palette,t.palette.picker,t.hue.slider,t.hue.picker,t.opacity.slider,t.opacity.picker],["mousedown","touchstart"],(()=>this._recalc=!0),{passive:!0})];if(!e.showAlways){const n=e.closeWithKey;o.push(i(t.button,"click",(()=>this.isOpen()?this.hide():this.show())),i(document,"keyup",(t=>this.isOpen()&&(t.key===n||t.code===n)&&this.hide())),i(document,["touchstart","mousedown"],(e=>{this.isOpen()&&!l(e).some((e=>e===t.app||e===t.button))&&this.hide();}),{capture:!0}));}if(e.adjustableNumbers){const e={rgba:[255,255,255,1],hsva:[360,100,100,1],hsla:[360,100,100,1],cmyk:[100,100,100,100]};p(t.interaction.result,((t,o,n)=>{const i=e[this.getColorRepresentation().toLowerCase()];if(i){const e=i[n],s=t+(e>=100?1e3*o:o);return s<=0?0:Number((s<e?s:e).toPrecision(3))}return t}));}if(e.autoReposition&&!e.inline){let t=null;const n=this;o.push(i(window,["scroll","resize"],(()=>{n.isOpen()&&(e.closeOnScroll&&n.hide(),null===t?(t=setTimeout((()=>t=null),100),requestAnimationFrame((function e(){n._rePositioningPicker(),null!==t&&requestAnimationFrame(e);}))):(clearTimeout(t),t=setTimeout((()=>t=null),100)));}),{capture:!0}));}this._eventBindings=o;}_rePositioningPicker(){const{options:t}=this;if(!t.inline){if(!this._nanopop.update({container:document.body.getBoundingClientRect(),position:t.position})){const t=this._root.app,e=t.getBoundingClientRect();t.style.top=(window.innerHeight-e.height)/2+"px",t.style.left=(window.innerWidth-e.width)/2+"px";}}}_updateOutput(t){const{_root:e,_color:o,options:n}=this;if(e.interaction.type()){const t=`to${e.interaction.type().getAttribute("data-type")}`;e.interaction.result.value="function"==typeof o[t]?o[t]().toString(n.outputPrecision):"";}!this._initializingActive&&this._recalc&&this._emit("change",o,t,this);}_clearColor(t=!1){const{_root:e,options:o}=this;o.useAsButton||e.button.style.setProperty("--pcr-color","rgba(0, 0, 0, 0.15)"),e.button.classList.add("clear"),o.showAlways||this.hide(),this._lastColor=null,this._initializingActive||t||(this._emit("save",null),this._emit("clear"));}_parseLocalColor(t){const{values:e,type:o,a:n}=w(t),{lockOpacity:i}=this.options,s=void 0!==n&&1!==n;return e&&3===e.length&&(e[3]=void 0),{values:!e||i&&s?null:e,type:o}}_t(t){return this.options.i18n[t]||E.I18N_DEFAULTS[t]}_emit(t,...e){this._eventListener[t].forEach((t=>t(...e,this)));}on(t,e){return this._eventListener[t].push(e),this}off(t,e){const o=this._eventListener[t]||[],n=o.indexOf(e);return ~n&&o.splice(n,1),this}addSwatch(t){const{values:e}=this._parseLocalColor(t);if(e){const{_swatchColors:t,_root:o}=this,n=A(...e),s=r(`<button type="button" style="--pcr-color: ${n.toRGBA().toString(0)}" aria-label="${this._t("btn:swatch")}"/>`);return o.swatches.appendChild(s),t.push({el:s,color:n}),this._eventBindings.push(i(s,"click",(()=>{this.setHSVA(...n.toHSVA(),!0),this._emit("swatchselect",n),this._emit("change",n,"swatch",this);}))),!0}return !1}removeSwatch(t){const e=this._swatchColors[t];if(e){const{el:o}=e;return this._root.swatches.removeChild(o),this._swatchColors.splice(t,1),!0}return !1}applyColor(t=!1){const{preview:e,button:o}=this._root,n=this._color.toRGBA().toString(0);return e.lastColor.style.setProperty("--pcr-color",n),this.options.useAsButton||o.style.setProperty("--pcr-color",n),o.classList.remove("clear"),this._lastColor=this._color.clone(),this._initializingActive||t||this._emit("save",this._color),this}destroy(){cancelAnimationFrame(this._setupAnimationFrame),this._eventBindings.forEach((t=>s(...t))),Object.keys(this._components).forEach((t=>this._components[t].destroy()));}destroyAndRemove(){this.destroy();const{root:t,app:e}=this._root;t.parentElement&&t.parentElement.removeChild(t),e.parentElement.removeChild(e),Object.keys(this).forEach((t=>this[t]=null));}hide(){return !!this.isOpen()&&(this._root.app.classList.remove("visible"),this._emit("hide"),!0)}show(){return !this.options.disabled&&!this.isOpen()&&(this._root.app.classList.add("visible"),this._rePositioningPicker(),this._emit("show",this._color),this)}isOpen(){return this._root.app.classList.contains("visible")}setHSVA(t=360,e=0,o=0,n=1,i=!1){const s=this._recalc;if(this._recalc=!1,t<0||t>360||e<0||e>100||o<0||o>100||n<0||n>1)return !1;this._color=A(t,e,o,n);const{hue:r,opacity:a,palette:l}=this._components;return r.update(t/360),a.update(n),l.update(e/100,1-o/100),i||this.applyColor(),s&&this._updateOutput(),this._recalc=s,!0}setColor(t,e=!1){if(null===t)return this._clearColor(e),!0;const{values:o,type:n}=this._parseLocalColor(t);if(o){const t=n.toUpperCase(),{options:i}=this._root.interaction,s=i.find((e=>e.getAttribute("data-type")===t));if(s&&!s.hidden)for(const t of i)t.classList[t===s?"add":"remove"]("active");return !!this.setHSVA(...o,e)&&this.setColorRepresentation(t)}return !1}setColorRepresentation(t){return t=t.toUpperCase(),!!this._root.interaction.options.find((e=>e.getAttribute("data-type").startsWith(t)&&!e.click()))}getColorRepresentation(){return this._representation}getColor(){return this._color}getSelectedColor(){return this._lastColor}getRoot(){return this._root}disable(){return this.hide(),this.options.disabled=!0,this._root.button.classList.add("disabled"),this}enable(){return this.options.disabled=!1,this._root.button.classList.remove("disabled"),this}}return e=e.default})()));
-
-});
-
-var Pickr = /*@__PURE__*/getDefaultExportFromCjs(pickr_min);
-
 const DEFAULT_SETTINGS = {
     viewMode: ViewMode.Normal,
     viewImageInEditor: true,
@@ -645,7 +538,6 @@ class ImageToolkitSettingTab extends obsidian.PluginSettingTab {
     display() {
         let { containerEl } = this;
         containerEl.empty();
-        containerEl.createEl('h2', { text: t("IMAGE_TOOLKIT_SETTINGS_TITLE") });
         // Common Settings:
         this.displayCommonSettings(containerEl);
         // View Trigger Settings:
@@ -653,7 +545,7 @@ class ImageToolkitSettingTab extends obsidian.PluginSettingTab {
         // Pin Mode Settings:
         this.displayPinModeSettings(containerEl);
         //region >>> VIEW_DETAILS_SETTINGS
-        containerEl.createEl('h3', { text: t("VIEW_DETAILS_SETTINGS") });
+        new obsidian.Setting(containerEl).setName(t("VIEW_DETAILS_SETTINGS")).setHeading();
         let imgMoveSpeedScaleText;
         new obsidian.Setting(containerEl)
             .setName(t("IMAGE_MOVE_SPEED_NAME"))
@@ -694,10 +586,28 @@ class ImageToolkitSettingTab extends obsidian.PluginSettingTab {
                 yield this.plugin.saveSettings();
             }));
         }));
-        this.createPickrSetting(containerEl, 'IMG_VIEW_BACKGROUND_COLOR_NAME', IMG_DEFAULT_BACKGROUND_COLOR);
+        new obsidian.Setting(containerEl)
+            .setName(t("IMG_VIEW_BACKGROUND_COLOR_NAME"))
+            .addColorPicker(picker => {
+            picker
+                .setValue(this.plugin.settings.imgViewBackgroundColor || DEFAULT_SETTINGS.imgViewBackgroundColor)
+                .onChange((value) => __awaiter(this, void 0, void 0, function* () {
+                this.plugin.settings.imgViewBackgroundColor = value;
+                yield this.plugin.saveSettings();
+            }));
+        })
+            .addExtraButton(button => {
+            button.setIcon('rotate-ccw')
+                .setTooltip(t('RESET'))
+                .onClick(() => __awaiter(this, void 0, void 0, function* () {
+                this.plugin.settings.imgViewBackgroundColor = DEFAULT_SETTINGS.imgViewBackgroundColor;
+                yield this.plugin.saveSettings();
+                this.display();
+            }));
+        });
         //endregion
         //region >>> IMAGE_BORDER_SETTINGS
-        containerEl.createEl('h3', { text: t("IMAGE_BORDER_SETTINGS") });
+        new obsidian.Setting(containerEl).setName(t("IMAGE_BORDER_SETTINGS")).setHeading();
         new obsidian.Setting(containerEl)
             .setName(t("IMAGE_BORDER_TOGGLE_NAME"))
             .setDesc(t("IMAGE_BORDER_TOGGLE_DESC"))
@@ -748,8 +658,9 @@ class ImageToolkitSettingTab extends obsidian.PluginSettingTab {
         }));
         //endregion
         //region >>> GALLERY_NAVBAR_SETTINGS
-        let galleryNavbarDefaultColorSetting, galleryNavbarHoverColorSetting, galleryImgBorderToggleSetting, galleryImgBorderActiveColorSetting;
-        containerEl.createEl('h3', { text: t("GALLERY_NAVBAR_SETTINGS") });
+        //let galleryNavbarDefaultColorSetting: Setting, galleryNavbarHoverColorSetting: Setting,
+        // galleryImgBorderToggleSetting: Setting, galleryImgBorderActiveColorSetting: Setting;
+        new obsidian.Setting(containerEl).setName(t("GALLERY_NAVBAR_SETTINGS")).setHeading();
         new obsidian.Setting(containerEl)
             .setName(t("GALLERY_NAVBAR_TOGGLE_NAME"))
             .setDesc(t("GALLERY_NAVBAR_TOGGLE_DESC"))
@@ -760,9 +671,45 @@ class ImageToolkitSettingTab extends obsidian.PluginSettingTab {
             this.switchSettingsDisabled(!value, galleryNavbarDefaultColorSetting, galleryNavbarHoverColorSetting, galleryImgBorderToggleSetting, galleryImgBorderActiveColorSetting);
             yield this.plugin.saveSettings();
         })));
-        galleryNavbarDefaultColorSetting = this.createPickrSetting(containerEl, 'GALLERY_NAVBAR_DEFAULT_COLOR_NAME', GALLERY_NAVBAR_DEFAULT_COLOR);
-        galleryNavbarHoverColorSetting = this.createPickrSetting(containerEl, 'GALLERY_NAVBAR_HOVER_COLOR_NAME', GALLERY_NAVBAR_HOVER_COLOR);
-        galleryImgBorderToggleSetting = new obsidian.Setting(containerEl)
+        const galleryNavbarDefaultColorSetting = new obsidian.Setting(containerEl)
+            .setName(t("GALLERY_NAVBAR_DEFAULT_COLOR_NAME"))
+            .addColorPicker(picker => {
+            picker
+                .setValue(this.plugin.settings.galleryNavbarDefaultColor || DEFAULT_SETTINGS.galleryNavbarDefaultColor)
+                .onChange((value) => __awaiter(this, void 0, void 0, function* () {
+                this.plugin.settings.galleryNavbarDefaultColor = value;
+                yield this.plugin.saveSettings();
+            }));
+        })
+            .addExtraButton(button => {
+            button.setIcon('rotate-ccw')
+                .setTooltip(t('RESET'))
+                .onClick(() => __awaiter(this, void 0, void 0, function* () {
+                this.plugin.settings.galleryNavbarDefaultColor = DEFAULT_SETTINGS.galleryNavbarDefaultColor;
+                yield this.plugin.saveSettings();
+                this.display();
+            }));
+        });
+        const galleryNavbarHoverColorSetting = new obsidian.Setting(containerEl)
+            .setName(t("GALLERY_NAVBAR_HOVER_COLOR_NAME"))
+            .addColorPicker(picker => {
+            picker
+                .setValue(this.plugin.settings.galleryNavbarHoverColor || DEFAULT_SETTINGS.galleryNavbarHoverColor)
+                .onChange((value) => __awaiter(this, void 0, void 0, function* () {
+                this.plugin.settings.galleryNavbarHoverColor = value;
+                yield this.plugin.saveSettings();
+            }));
+        })
+            .addExtraButton(button => {
+            button.setIcon('rotate-ccw')
+                .setTooltip(t('RESET'))
+                .onClick(() => __awaiter(this, void 0, void 0, function* () {
+                this.plugin.settings.galleryNavbarHoverColor = DEFAULT_SETTINGS.galleryNavbarHoverColor;
+                yield this.plugin.saveSettings();
+                this.display();
+            }));
+        });
+        const galleryImgBorderToggleSetting = new obsidian.Setting(containerEl)
             .setName(t("GALLERY_IMG_BORDER_TOGGLE_NAME"))
             .setDesc(t("GALLERY_IMG_BORDER_TOGGLE_DESC"))
             .addToggle(toggle => toggle
@@ -771,12 +718,28 @@ class ImageToolkitSettingTab extends obsidian.PluginSettingTab {
             this.plugin.settings.galleryImgBorderActive = value;
             yield this.plugin.saveSettings();
         })));
-        galleryImgBorderActiveColorSetting = this.createPickrSetting(containerEl, 'GALLERY_IMG_BORDER_ACTIVE_COLOR_NAME', GALLERY_IMG_BORDER_ACTIVE_COLOR);
+        const galleryImgBorderActiveColorSetting = new obsidian.Setting(containerEl)
+            .setName(t("GALLERY_IMG_BORDER_ACTIVE_COLOR_NAME"))
+            .addColorPicker(picker => {
+            picker.setValue(this.plugin.settings.galleryImgBorderActiveColor || DEFAULT_SETTINGS.galleryImgBorderActiveColor)
+                .onChange((value) => __awaiter(this, void 0, void 0, function* () {
+                this.plugin.settings.galleryImgBorderActiveColor = value;
+                yield this.plugin.saveSettings();
+            }));
+        })
+            .addExtraButton(button => {
+            button.setIcon('rotate-ccw')
+                .setTooltip(t('RESET'))
+                .onClick(() => __awaiter(this, void 0, void 0, function* () {
+                this.plugin.settings.imgViewBackgroundColor = DEFAULT_SETTINGS.galleryImgBorderActiveColor;
+                yield this.plugin.saveSettings();
+                this.display();
+            }));
+        });
         this.switchSettingsDisabled(!this.plugin.settings.galleryNavbarToggle, galleryNavbarDefaultColorSetting, galleryNavbarHoverColorSetting, galleryImgBorderToggleSetting, galleryImgBorderActiveColorSetting);
         //endregion
         //region >>> HOTKEYS_SETTINGS
-        containerEl.createEl('h3', { text: t("HOTKEY_SETTINGS") });
-        containerEl.createEl('p', { text: t("HOTKEY_SETTINGS_DESC") });
+        new obsidian.Setting(containerEl).setName(t("HOTKEY_SETTINGS")).setDesc(t("HOTKEY_SETTINGS_DESC")).setHeading();
         if (this.plugin.settings.moveTheImageHotkey === this.plugin.settings.switchTheImageHotkey) {
             this.plugin.settings.moveTheImageHotkey = MOVE_THE_IMAGE.DEFAULT_HOTKEY;
         }
@@ -792,12 +755,10 @@ class ImageToolkitSettingTab extends obsidian.PluginSettingTab {
                 yield this.plugin.saveSettings();
             }));
         })).then((setting) => {
-            setting.controlEl.appendChild(createDiv('setting-editor-extra-setting-button hotkeys-settings-plus', (el) => {
-                el.innerHTML = "+";
-            }));
-            setting.controlEl.appendChild(createDiv('setting-editor-extra-setting-button', (el) => {
-                el.innerHTML = MOVE_THE_IMAGE.SVG;
-            }));
+            setting.addExtraButton(button => {
+                button.setIcon('plus').setDisabled(true);
+            });
+            setting.controlEl.appendChild(obsidian.sanitizeHTMLToDom(MOVE_THE_IMAGE.SVG));
         });
         if (this.plugin.settings.switchTheImageHotkey === this.plugin.settings.moveTheImageHotkey) {
             this.plugin.settings.switchTheImageHotkey = SWITCH_THE_IMAGE.DEFAULT_HOTKEY;
@@ -814,12 +775,10 @@ class ImageToolkitSettingTab extends obsidian.PluginSettingTab {
                 yield this.plugin.saveSettings();
             }));
         })).then((setting) => {
-            setting.controlEl.appendChild(createDiv('setting-editor-extra-setting-button hotkeys-settings-plus', (el) => {
-                el.innerHTML = "+";
-            }));
-            setting.controlEl.appendChild(createDiv('setting-editor-extra-setting-button', (el) => {
-                el.innerHTML = SWITCH_THE_IMAGE.SVG;
-            }));
+            setting.addExtraButton(button => {
+                button.setIcon('plus').setDisabled(true);
+            });
+            setting.controlEl.appendChild(obsidian.sanitizeHTMLToDom(SWITCH_THE_IMAGE.SVG));
         });
         if (switchTheImageSetting) {
             this.checkDropdownOptions(MOVE_THE_IMAGE.CODE, switchTheImageSetting);
@@ -856,7 +815,6 @@ class ImageToolkitSettingTab extends obsidian.PluginSettingTab {
         //endregion
     }
     displayCommonSettings(containerEl) {
-        containerEl.createEl('h3', { text: t('COMMON_SETTINGS') });
         new obsidian.Setting(containerEl)
             .setName(t("VIEW_MODE_NAME"))
             .addDropdown((dropdown) => __awaiter(this, void 0, void 0, function* () {
@@ -871,7 +829,7 @@ class ImageToolkitSettingTab extends obsidian.PluginSettingTab {
         }));
     }
     displayViewTriggerSettings(containerEl) {
-        containerEl.createEl('h3', { text: t("VIEW_TRIGGER_SETTINGS") });
+        new obsidian.Setting(containerEl).setName(t("VIEW_TRIGGER_SETTINGS")).setHeading();
         new obsidian.Setting(containerEl)
             .setName(t("VIEW_IMAGE_IN_EDITOR_NAME"))
             .setDesc(t("VIEW_IMAGE_IN_EDITOR_DESC"))
@@ -916,7 +874,7 @@ class ImageToolkitSettingTab extends obsidian.PluginSettingTab {
     displayPinModeSettings(containerEl) {
         //region >>> PIN_MODE_SETTINGS
         let pinMaximumSetting;
-        containerEl.createEl('h3', { text: t("PIN_MODE_SETTINGS") });
+        new obsidian.Setting(containerEl).setName(t("PIN_MODE_SETTINGS")).setHeading();
         /*new Setting(containerEl)
           .setName(t("PIN_MODE_NAME"))
           .setDesc(t("PIN_MODE_DESC"))
@@ -962,95 +920,6 @@ class ImageToolkitSettingTab extends obsidian.PluginSettingTab {
         for (const setting of settings) {
             setting === null || setting === void 0 ? void 0 : setting.setDisabled(disabled);
         }
-    }
-    createPickrSetting(containerEl, name, defaultColor) {
-        let pickrDefault;
-        if ('GALLERY_NAVBAR_DEFAULT_COLOR_NAME' === name) {
-            pickrDefault = this.plugin.settings.galleryNavbarDefaultColor;
-        }
-        else if ('GALLERY_NAVBAR_HOVER_COLOR_NAME' === name) {
-            pickrDefault = this.plugin.settings.galleryNavbarHoverColor;
-        }
-        else if ('GALLERY_IMG_BORDER_ACTIVE_COLOR_NAME' === name) {
-            pickrDefault = this.plugin.settings.galleryImgBorderActiveColor;
-        }
-        else if ('IMG_VIEW_BACKGROUND_COLOR_NAME' === name) {
-            pickrDefault = this.plugin.settings.imgViewBackgroundColor;
-        }
-        else {
-            pickrDefault = defaultColor;
-        }
-        let pickr;
-        return new obsidian.Setting(containerEl)
-            // @ts-ignore
-            .setName(t(name))
-            .then((setting) => {
-            pickr = Pickr.create({
-                el: setting.controlEl.createDiv({ cls: "picker" }),
-                theme: 'nano',
-                position: "left-middle",
-                lockOpacity: false,
-                default: pickrDefault,
-                swatches: [],
-                components: {
-                    preview: true,
-                    hue: true,
-                    opacity: true,
-                    interaction: {
-                        hex: true,
-                        rgba: true,
-                        hsla: false,
-                        input: true,
-                        cancel: true,
-                        save: true,
-                    },
-                }
-            })
-                .on('show', (color, instance) => {
-                if (!this.plugin.settings.galleryNavbarToggle)
-                    pickr === null || pickr === void 0 ? void 0 : pickr.hide();
-                const { result } = pickr.getRoot().interaction;
-                requestAnimationFrame(() => requestAnimationFrame(() => result.select()));
-            })
-                .on('save', (color, instance) => {
-                if (!color)
-                    return;
-                instance.hide();
-                const savedColor = color.toHEXA().toString();
-                instance.addSwatch(savedColor);
-                this.setAndSavePickrSetting(name, savedColor);
-            })
-                .on('cancel', (instance) => {
-                instance.hide();
-            });
-        })
-            .addExtraButton((btn) => {
-            btn.setIcon("reset")
-                .onClick(() => {
-                pickr.setColor(defaultColor);
-                this.setAndSavePickrSetting(name, defaultColor);
-            })
-                .setTooltip('restore default color');
-        });
-    }
-    setAndSavePickrSetting(name, savedColor) {
-        if ('GALLERY_NAVBAR_DEFAULT_COLOR_NAME' === name) {
-            this.plugin.settings.galleryNavbarDefaultColor = savedColor;
-        }
-        else if ('GALLERY_NAVBAR_HOVER_COLOR_NAME' === name) {
-            this.plugin.settings.galleryNavbarHoverColor = savedColor;
-        }
-        else if ('GALLERY_IMG_BORDER_ACTIVE_COLOR_NAME' === name) {
-            this.plugin.settings.galleryImgBorderActiveColor = savedColor;
-        }
-        else if ('IMG_VIEW_BACKGROUND_COLOR_NAME' === name) {
-            this.plugin.settings.imgViewBackgroundColor = savedColor;
-            // this.plugin.containerView?.setImgViewDefaultBackgroundForImgList();
-            this.plugin.getAllContainerViews().forEach(container => {
-                container.setImgViewDefaultBackgroundForImgList();
-            });
-        }
-        this.plugin.saveSettings();
     }
     getDropdownOptions() {
         let options = {};

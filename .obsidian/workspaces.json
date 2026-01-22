@@ -94,7 +94,7 @@
                       "repelStrength": 10,
                       "linkStrength": 1,
                       "linkDistance": 250,
-                      "scale": 0.7132754626224421,
+                      "scale": 0.5087618855792587,
                       "close": true
                     }
                   },
@@ -111,7 +111,17 @@
             "dimension": 67.0867309117865,
             "children": [
               {
-                "id": "3c709899cee1aaf8",
+                "id": "7f037ea62e10610c",
+                "type": "leaf",
+                "state": {
+                  "type": "similar-notes-sidebar",
+                  "state": {},
+                  "icon": "files",
+                  "title": "Similar Notes"
+                }
+              },
+              {
+                "id": "f4d7c4b3d2a12c1c",
                 "type": "leaf",
                 "state": {
                   "type": "smart-connections-view",
@@ -144,7 +154,7 @@
           }
         ],
         "direction": "horizontal",
-        "width": 345.5
+        "width": 315.5
       },
       "right": {
         "id": "3b8c3cad91b8fd5d",
@@ -218,7 +228,8 @@
                   "title": "10_dashboardのアウトライン"
                 }
               }
-            ]
+            ],
+            "currentTab": 3
           },
           {
             "id": "22141a08ca8d8176",
@@ -243,6 +254,8 @@
       },
       "left-ribbon": {
         "hiddenItems": {
+          "smart-connections:Smart Lookup: Open lookup view": true,
+          "similar-notes:Open Similar Notes": true,
           "bases:Create new base": true,
           "workspaces:ワークスペースレイアウトを管理": true,
           "switcher:クイックスイッチャーを開く": true,
@@ -258,7 +271,7 @@
         }
       },
       "active": "ddbbfb04f1eb3651",
-      "mtime": "2025-08-23T19:07:54+09:00"
+      "mtime": "2026-01-22T20:06:31+09:00"
     }
   },
   "active": "default"

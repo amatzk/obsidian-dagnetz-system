@@ -79,7 +79,7 @@
 - **DataView**：期間・属性別自動ファイル・タスク一覧生成
 - **Tag Folder**：タグベース一覧表示（実質的なMOC）
 - **Floating Search**：キーワード・タグなど組み合わせ検索
-- **Smart Connections**：AIの意味的類似性を使った関連性の自動発見
+- **Smart Connections** or **Similar Notes**：AIの意味的類似性を使った関連性の自動発見
 - **Bases**：Vault内のファイルをデータベース化し、カスタム一覧表示
 
 **5. 例外ルールと注意事項**
@@ -206,7 +206,7 @@ tags:
         - View：02_view配下の一覧表示用 `.md`や`.base`ファイルを一覧表示
         - Today | Pin：今日作成したファイルや、`Pin`タグを付与したファイルの一覧
         - Data：01_data配下の全てのファイル一覧
-5. **Smart Connectionsによる関連ノート一覧表示**
+5. **Smart Connections or Similar Notesによる関連ノート一覧表示**
     - AIによる意味的類似性のあるノートの一覧表示
     - Smart ChatによるAIとの対話
 6. **タスク管理**
@@ -224,7 +224,7 @@ tags:
 「思考の変遷を時系列で保存」と「過去の自分の振り返り」を実現するために、最終的な文章は必ず自分で執筆することを推奨します。
 
 **適切な使い方**：
-- **Smart Connections**：意味的類似性による関連ノートの自動発見
+- **Smart Connections** or **Similar Notes**：意味的類似性による関連ノートの自動発見
 - **アイデアの発想支援**：思考の出発点として活用（最終的には自分の言葉で再構築）
 - **検索・整理の補助**：既存ノートの整理や関連性の発見
 
@@ -583,6 +583,19 @@ Smart Connections
 Smart Chat
 - Chat
     - Language → 日本語
+
+### [Similar Notes](https://github.com/joybro/obsidian-similar-notes)
+
+AIの意味的類似性を使ってObsidianのノート間の関連性を自動で発見し、手動でのリンク作成や整理の手間を省くプラグイン
+Smart Connectionsにおいて、Ollamaを使用するためには課金しなくてはならなくなったのに伴って導入した代替
+Similar NotesとSmart Connectionsのどちらかを使う
+
+Index：
+- Exclude folders from indexing → 00_templates/ 02_view/
+	- インデックスから除外するフォルダ
+Display：
+- Show similar notes at the bottom of notes → OFF
+	- ノートの下部にSimilar Notesを表示
 
 ### [Style Settings](https://github.com/mgmeyers/obsidian-style-settings)
 
