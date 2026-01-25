@@ -30,7 +30,8 @@
   "syntax_highlighting_mobile": true,
   "enabled_templates_hotkeys": [
     "00_templates/11_embed_code.md",
-    "00_templates/02_literature.md"
+    "00_templates/02_literature.md",
+    "00_templates/03_task.md"
   ],
   "startup_templates": [],
   "intellisense_render": 1

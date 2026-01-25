@@ -70,5 +70,13 @@
       ],
       "key": "T"
     }
+  ],
+  "templater-obsidian:create-00_templates/03_task.md": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "M"
+    }
   ]
 }

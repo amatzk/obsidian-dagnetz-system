@@ -10,9 +10,10 @@
     "highTextContrast": false
   },
   "knownTags": {
-    "文献": 1,
-    "sample": 2,
     "dashboard": 3,
+    "literature": 4,
+    "note": 5,
+    "sample": 2,
     "task": 4
   },
   "tagColors": {},
