@@ -1,0 +1,11 @@
+{
+    "id": "semantic-linker",
+    "name": "Semantic Linker",
+    "version": "0.0.1",
+    "minAppVersion": "1.11.0",
+    "description": "Find semantically similar notes using Ollama. fully offline semantic search.",
+    "author": "amatzk",
+    "authorUrl": "https://github.com/amatzk",
+    "fundingUrl": "https://github.com/sponsors/amatzk",
+    "isDesktopOnly": true
+}

@@ -2,19 +2,12 @@
   "templater-obsidian",
   "obsidian-auto-link-title",
   "obsidian-git",
-  "dataview",
   "obsidian-outliner",
   "obsidian-minimal-settings",
   "obsidian-style-settings",
   "colored-tags",
-  "embed-code-file",
-  "float-search",
-  "global-search-and-replace",
   "obsidian-image-toolkit",
   "mononote",
-  "slash-commander",
-  "obsidian-tagfolder",
-  "various-complements",
-  "smart-connections",
-  "similar-notes"
+  "omnisearch",
+  "semantic-linker"
 ]

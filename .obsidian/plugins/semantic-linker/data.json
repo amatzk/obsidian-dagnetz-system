@@ -1,0 +1,24 @@
+{
+  "ollamaUrl": "http://localhost:11434",
+  "ollamaModel": "",
+  "threshold": 0.3,
+  "sidebarLimit": 10,
+  "searchLimit": 20,
+  "includeFrontmatter": false,
+  "excludePatterns": [
+    "00_templates/",
+    "02_view/"
+  ],
+  "excludedTags": [],
+  "searchDebounceTime": 500,
+  "fileProcessingDelay": 2000,
+  "previewLength": 300,
+  "introWeight": 1,
+  "minQueryLength": 2,
+  "safetyMargin": 0.95,
+  "overlapRatio": 0.1,
+  "reductionRatio": 0.8,
+  "parallelIndexingCount": 1,
+  "maxRetries": 5,
+  "showInlineSimilarNotes": true
+}

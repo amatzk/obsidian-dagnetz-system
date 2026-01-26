@@ -1,11 +1,11 @@
 {
   "file-explorer": true,
-  "global-search": true,
-  "switcher": true,
+  "global-search": false,
+  "switcher": false,
   "graph": true,
-  "backlink": true,
-  "canvas": true,
-  "outgoing-link": true,
+  "backlink": false,
+  "canvas": false,
+  "outgoing-link": false,
   "tag-pane": false,
   "properties": false,
   "page-preview": true,
@@ -19,7 +19,7 @@
   "markdown-importer": false,
   "zk-prefixer": false,
   "random-note": false,
-  "outline": true,
+  "outline": false,
   "word-count": false,
   "slides": false,
   "audio-recorder": false,
@@ -28,6 +28,6 @@
   "publish": false,
   "sync": false,
   "webviewer": false,
-  "footnotes": true,
+  "footnotes": false,
   "bases": true
 }

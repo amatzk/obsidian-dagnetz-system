@@ -44,34 +44,31 @@ views:
 
 ## Pin
 ```base
-formulas:
-  note_title: file.asLink(file.name.replace(/^\d{4}-\d{2}-\d{2}_|_\d{4}-\d{2}-\d{2}$/, ""))
 views:
   - type: table
     name: pin
     filters:
       and:
         - file.path.contains("01_data")
-        - file.hasTag("Pin")
+        - file.hasTag("pin")
     order:
       - file.tags
-      - formula.note_title
+      - file.name
     sort:
+      - property: file.name
+        direction: ASC
       - property: file.mtime
         direction: DESC
+
 ```
 
 ## Today
 ```base
 formulas:
   backlinks: file.backlinks.map(if(value.asFile(), value.asFile().asLink(value.asFile().name.replace(/\.[^\.]+$/, "")), null)).unique().filter(value)
-  last_edit: file.mtime.relative()
-  note_title: file.asLink(file.name.replace(/^\d{4}-\d{2}-\d{2}_|_\d{4}-\d{2}-\d{2}$/, ""))
 properties:
   formula.backlinks:
     displayName: backlinks
-  formula.last_edit:
-    displayName: last edit
 views:
   - type: table
     name: today
@@ -81,17 +78,17 @@ views:
         - '!file.hasTag("task")'
     order:
       - file.tags
-      - formula.note_title
+      - file.name
     sort:
       - property: file.mtime
         direction: DESC
+
 ```
 
 ## Data
 ```base
 formulas:
   backlinks: file.backlinks.map(if(value.asFile(), value.asFile().asLink(value.asFile().name.replace(/\.[^\.]+$/, "")), null)).unique().filter(value)
-  note_title: file.asLink(file.name.replace(/^\d{4}-\d{2}-\d{2}_|_\d{4}-\d{2}-\d{2}$/, ""))
 properties:
   formula.backlinks:
     displayName: backlinks
@@ -102,9 +99,10 @@ views:
       and:
         - file.folder.contains("01_data")
         - '!file.inFolder("01_data/" + today().format("YYYY/MM/DD"))'
+        - '!file.hasTag("task")'
     order:
       - file.tags
-      - formula.note_title
+      - file.name
     sort:
       - property: file.mtime
         direction: DESC
@@ -116,7 +114,7 @@ views:
         - '!file.hasTag("task")'
     order:
       - file.tags
-      - formula.note_title
+      - file.name
     sort:
       - property: file.mtime
         direction: DESC
@@ -126,9 +124,10 @@ views:
       and:
         - file.folder.contains("01_data")
         - file.ext == "md"
+        - '!file.hasTag("task")'
     order:
       - file.tags
-      - formula.note_title
+      - file.name
     sort:
       - property: file.mtime
         direction: DESC

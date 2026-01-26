@@ -37,15 +37,18 @@
     - 循環参照のない、過去から未来への一方向ネットワーク
     - 思考の変遷を時系列で追跡可能
 
-**4. 思い出す仕組み**
-- グラフビューによる思考ネットワークの俯瞰
-- キーワード・タグなどでインターネットのように検索
-- 期間・属性などによるデータベースのような一覧表示
-- AIによる意味的類似性を使った関連性の自動発見
+**4. 繋げる仕組み**
+- AIによる意味的に関連するノートの一覧表示から、リンクをノートへ貼り付け
 
-**5. 脳の複製**
+**5. 思い出す仕組み**
+- Dashboardでノートを一覧表示
+- AIによる意味的に関連するノートの発見
+- キーワード・タグなどでインターネットのように検索
+- グラフビューによる思考ネットワークの俯瞰
+
+**6. 第二の脳**
 - **思考の追跡**：なぜその結論に至ったかの思考過程を記録
-- **忘却しない第二の脳**：人間の記憶の限界を補完する外部記憶システム
+- **忘却しないもう一つの脳**：人間の記憶の限界を補完する外部記憶システム
 - **思いがけない発見**：過去の知識と現在の問題の偶発的組み合わせによる新たな洞察
 
 ## シンプルな運用
@@ -64,42 +67,39 @@
 **2. 分類禁止の運用**
 - タグ
     - ノートへのアクセス効率向上のための道標が目的
+    - 全てのノートに対しデフォルトのタグを付与
+	    - note タグ → 通常ノート（00_templates/01_note.md）
+	    - task タグ → タスクノート（00_templates/02_task.md）
+	    - clip タグ → Web Clipper によって生成されたタグ
+	- 特殊タグ
+		- pin タグ → 固定表示するノート
+		- dashboard → ダッシュボード専用
     - 階層タグを使用禁止　フラットタグのみ
 - ノート・添付ファイルの配置
-    - 全てファイルは、作成日年月日ディレクトリ `01_data/YYYY/MM/DD/` 配下に配置
+    - 全てファイルは、作成日年月日ディレクトリ `01_data/YYYY/MM/DD/` 配下に自動配置
     - フォルダ階層による分類を一切行わない
 
-**3. DAG構造の運用**
-- 新規ノート作成時、関連する過去ノートへのリンクを積極的に作成
-- 一つ以上のタグを必ず設定（ノートの孤立を防ぐため）
-- ローカルグラフでノートや添付ファイルの関連性を確認
+**3. DAG構造の構築
+- AIによる意味的類似性のあるノート一覧から、関連があるもののリンクを貼る
 
-**4. 検索・一覧機能**
-- **ローカルグラフ**：DAG構造の可視化
-- **DataView**：期間・属性別自動ファイル・タスク一覧生成
-- **Tag Folder**：タグベース一覧表示（実質的なMOC）
-- **Floating Search**：キーワード・タグなど組み合わせ検索
-- **Smart Connections** or **Similar Notes**：AIの意味的類似性を使った関連性の自動発見
-- **Bases**：Vault内のファイルをデータベース化し、カスタム一覧表示
-
-**5. 例外ルールと注意事項**
+**4. 例外と注意事項**
 - 誤字・脱字の修正は過去ノートでも許可（Git履歴で追跡、修正しすぎ注意）
 - 生成AIによるノート代筆は非推奨（自分の思考ではないため「第二の脳」の価値を損なう）
 
 ## ディレクトリの用途
 
 - 00_template
-    - テンプレート
-    - [[01_note]]：新規ノート用
-    - [[11_embed_code]]：Embed Code File プラグイン用
+    - テンプレート置き場
+    - 01_note：新規ノート
+    - 02_task：タスクノート
 - 01_data/YYYY/MM/DD
     - マークダウン、添付ファイル、キャンバスなど全てのファイル置き場
     - 保管庫にファイルを追加する場合、追加した日付（YYYY/MM/DD）のディレクトリに全て入れる
-    - 過去ファイルは編集禁止
+    - 昨日以前の全てのファイルは編集禁止
     - ファイル名のリネームは許可
         - Obsidianの使い勝手から、ユニークなファイル名である必要があるため
 - 02_view
-    - DataView および Bases プラグインによる 一覧表示
+    - Dashboardノート
 
 ## テンプレートの使い方
 
@@ -124,37 +124,40 @@
 1. **ノート作成**:
     - 新規ノートを作成（Ctrl + N）
     - 自動的に「01_data/YYYY/MM/DD/」ディレクトリに保存される（Templaterプラグイン）
-    - 作成日時が自動挿入される（Templaterプラグイン）
 2. **タイトル設定**:
-    - トピックを簡潔に表す具体的なタイトルを付ける（F2）
-    - 検索しやすい名前にする
+    - トピックを簡潔に表す、検索しやすい具体的なタイトルを付ける（F2）
     - 例: 「DAGネットワークの特徴」「量子コンピュータの基本原理」
 3. **タグ設定**:
-    -  一つ以上のタグを設定（ノートを孤立させないため）
+    - note タグは自動で付与される（01_note テンプレート）
+    - 必要であればタグを設定（Dashboardでの視認性のため）
     - 階層タグは使用禁止（複雑性回避）
-    - 探しやすいタグをつける
-    - タグが実質的なMOC（Map of Contents）として働く
-        - Tag Folder で一覧表示
-        - DataViewで一覧表示
 4. **内容記述**:
-    - トピックの概要・詳細を記述
-    - 関連する既存ノートがあればリンクする
-    - 引用や参考元があれば記録する
+    - 内容：トピックの概要・詳細を記述
+    - 情報源：引用や参考元があれば記録する
+    - 内部リンク：関連する既存ノートがあればリンクする
+    - 上記3つより多くの見出しを作ることになるならば、粒度が大きいと判断して別のノートを作成することを推奨
 5. **書き終わったら編集禁止**:
     - 作成日内（寝るまで）に内容を完成させるのを推奨
     - 未完成でも、続きは別日に新規ノートとして作成する
 
 **具体例**:
-```
+```md
 ---
-created: 2025-06-21 15:15:15
 tags:
+  - note
   - physics
-  - quantum
 ---
-## 量子ビットの概念
+## 1. thoughts
+
+量子ビットの概念
 
 従来のコンピュータでは0か1の二値しか取れないビットを使用するが、量子コンピュータでは量子ビット（qubit）を使用する。量子ビットは0と1の重ね合わせ状態をとることができる。...
+
+## 2. source
+[タイトル](URL)
+
+## 3. related link
+[[関連ノート]]
 ```
 
 ### Q2: 同じトピックについて日を跨いで書く場合は？
@@ -162,8 +165,8 @@ tags:
 基本的にQ1と同じです。違いは以下。
 
 **タイトル（ファイル名）が被らないようにを工夫する**
-- 例えば「元のトピック名_YYYY-MM-DD」の形式を使用など
-    - 例：「量子コンピュータの基本原理_2025-05-04」
+- 例えば「YYYY-MM-DD_元のトピック名」の形式を使用など
+    - 例：「2025-05-04_量子コンピュータの基本原理」
 
 **リンク構造**
 - 冒頭で前回ノートへの明示的なリンクや埋め込みを作成
@@ -190,28 +193,18 @@ tags:
 
 以下の方法で過去の知識を効率的に検索・活用できます。
 
-1. **Floating Searchの活用**:
+1. **Omnisearchの活用**:
     - 検索画面からキーワードやタグなどを組み合わせて検索
-    - 例: `tag:#quantum path:"2025/04"` で4月の量子関連ノートを検索
-2. **Tag Folderによる閲覧**:
-    - Tag Folderパネルでタグの一覧表示
-    - 関連タグをクリックして関連ノートを素早く発見
-3. **グラフビューの活用**:
-    - ローカルグラフで関連ノートのDAG構造を視覚的に把握
-    - ノート間の接続を確認し、知識の関連性を発見
-4. **Basesによる一覧表示**:
-    - vault内のデータをデータベースのように扱い、一覧表示やフィルタリングが可能
-    - [[10_dashboard]]
-        - 複数のBasesを埋め込んだダッシュボードノート
-        - View：02_view配下の一覧表示用 `.md`や`.base`ファイルを一覧表示
-        - Today | Pin：今日作成したファイルや、`Pin`タグを付与したファイルの一覧
+2. **Basesによる一覧表示**:
+    - vault内のファイルをデータベースのように扱い、一覧表示やフィルタリングが可能
+    - 10_dashboard
+        - 複数のBasesを埋め込んだダッシュボード
+        - Task：taskタグを付与したファイルの一覧
+        - Pin：`Pin`タグを付与したファイルの一覧
+        - Today：今日作成したファイルの一覧
         - Data：01_data配下の全てのファイル一覧
-5. **Smart Connections or Similar Notesによる関連ノート一覧表示**
-    - AIによる意味的類似性のあるノートの一覧表示
-    - Smart ChatによるAIとの対話
-6. **タスク管理**
-    - [[20_tasks]]
-        - タスク一覧のDataViewと、タスクが記載されたノートでフィルタしたBasesを埋め込みしてあるノート
+3. **AIによる関連ノート一覧表示**
+    - ノート間で意味的類似性のあるノートの一覧表示
 
 ### Q5: 過去のノートに誤字・脱字を見つけた場合は？
 
@@ -220,66 +213,36 @@ tags:
 ### Q6: 生成AIにノートを書かせても良い？
 
 やめたほうがいいです。**AIが書いた文章は「自分の思考」ではありません。**
-このノート術は「忘却しない第二の脳」を構築するシステムです。AIに文章を書かせることは、この目標と根本的に矛盾します。
-「思考の変遷を時系列で保存」と「過去の自分の振り返り」を実現するために、最終的な文章は必ず自分で執筆することを推奨します。
+このノート術は、自分の脳の外部に存在する「忘却しない第二の脳」を構築するシステムです。生成AIに書かせたこと文章をは、自分自身の脳にはない情報となります。
+どうしても生成AIの文章を保存したいならば、更に自分の言葉で書き直すことを推奨します。そうすれば、自分の脳に記憶の爪痕を残すことができると考えられます。
 
 **適切な使い方**：
-- **Smart Connections** or **Similar Notes**：意味的類似性による関連ノートの自動発見
+- **ノート間の意味的類似性の算出**：AIによる関連ノートの自動発見
 - **アイデアの発想支援**：思考の出発点として活用（最終的には自分の言葉で再構築）
 - **検索・整理の補助**：既存ノートの整理や関連性の発見
 
 **避けるべき使い方**：
-- ノートの内容をAIに代筆させる
+- ノートの内容をAIに全て代筆させる
 - AI生成情報をそのまま記録する
 
 ## [Obsidian Web Clipper](https://obsidian.md/clipper) 用設定
 
 ```json
 {
-    "schemaVersion": "0.1.0",
-    "name": "DAGnetz",
-    "behavior": "create",
-    "noteContentFormat": "",
-    "properties": [
-        {
-            "name": "title",
-            "value": "{{title}}",
-            "type": "text"
-        },
-        {
-            "name": "source",
-            "value": "{{url}}",
-            "type": "text"
-        },
-        {
-            "name": "author",
-            "value": "{{author|split:\\\", \\\"|wikilink|join}}",
-            "type": "multitext"
-        },
-        {
-            "name": "published",
-            "value": "{{published}}",
-            "type": "date"
-        },
-        {
-            "name": "created",
-            "value": "{{date|date:\\\"YYYY-MM-DD HH:mm:ss\\\"}}",
-            "type": "date"
-        },
-        {
-            "name": "description",
-            "value": "{{description}}",
-            "type": "text"
-        },
-        {
-            "name": "tags",
-            "value": "文献",
-            "type": "multitext"
-        }
-    ],
-    "triggers": [],
-    "noteNameFormat": "{{title}}",
-    "path": "01_data/{{date|date:YYYY/MM/DD}}"
+	"schemaVersion": "0.1.0",
+	"name": "DAGnetz",
+	"behavior": "create",
+	"noteContentFormat": "## 1.content\n\n## 2.sources\n\ntitle:{{title}}\nurl:{{url}}\npublished:{{published}}\n\n## 3.links",
+	"properties": [
+		{
+			"name": "tags",
+			"value": "clip",
+			"type": "multitext"
+		}
+	],
+	"triggers": [],
+	"noteNameFormat": "{{date|date:YYYY-MM-DD}}_{{domain}}_{{title}}",
+	"path": "01_data/{{date|date:YYYY/MM/DD}}"
 }
 ```
 
@@ -312,7 +275,7 @@ tags:
 - [Minimal](https://github.com/kepano/obsidian-minimal)
 #### フォント
 
-デフォルトは、中国語フォントになっています。
+デフォルトは、中国語のようなよくわからないにフォントになっています。
 自分好みの日本語フォントを設定するとよいでしょう。
 ここでは [M+ FONTS](https://mplusfonts.github.io) を設定しています。
 
@@ -336,7 +299,7 @@ tags:
 ユーザによる割り当て：
 
 - Alt + F
-    - Floating Search: Search Obsidian Globally (With Last State)
+    - Omnisearch: Vault search
 - Ctrl + Q
     - Git: Commit-and-sync and then close Obsidian
 - Alt + H
@@ -345,12 +308,10 @@ tags:
     - Outliner：Move list and sublists down
 - Alt + ↑
     - Outliner：Move list and sublists up
-- Alt + C
-    - Templater: Insert 00_templates/11_embed_code.md
 - Ctrl + R
     - ライブプレビュー/ソースモードを切り替える
-- Ctrl + J
-    - Templater: Create 00_templates/02_literature.md
+- Ctrl + M
+    - Templater: Create 00_templates/02_task.md
 - Alt + T
     - Minimal Theme Settings: Cycle between table width option
 
@@ -361,18 +322,11 @@ tags:
 ONのコアプラグイン：
 
 - Bases
-- Footnotes view
-- アウトゴーイングリンク
-- アウトライン
-- キャンバス
-- クイックスイッチャー
 - グラフビュー
 - コマンドパレット
-- バックリンク
 - ファイルエクスプローラ
 - ページビュー
 - ワークスペース
-- 検索
 
 ## コミュニティプラグイン 設定
 
@@ -404,37 +358,6 @@ fce8e8-e8fcfc-eefce8-f3e8fc-fcf7e8-e8eefc-e8fcf3-fce8f7-fcf0e8-e8f7fc-edfce8-f7e
 7a1010-107a7a-407a10-40107a-7a5510-10407a-107a40-7a1055-7a3810-105d7a-1d7a10-5d107a-747a10-1f107a-107a5d-7a102a
 ```
 
-### [Dataview](https://github.com/blacksmithgu/obsidian-dataview)
-
-Obsidian Vaultをクエリ可能なデータベースとして扱うプラグイン
-
-ノートを俯瞰して一覧表示するために使用します。
-02_view 配下に個人的に使う一覧表示を用意しています。
-自分自身の用途に合わせてカスタムしてください。
-
-Obsidian v1.9.10 リリースのBases機能により、タスク一覧を除く全てのDataViewを置き換えました。
-
-- [[20_tasks]]
-    - タグで絞り込みしたノートに記述されたタスクを全て一覧表示
-
-- Enable JavaScript queries
-    - ON
-
-### [Embed Code File](https://github.com/almariah/embed-code-file)
-
-ソースコードを埋め込むことができるプラグイン
-
-別ファイルとしてコードを管理できるようになるので便利です。
-自身の使用する言語を設定に追加してください。
-
-### [Floating Search](https://github.com/Quorafind/Obsidian-Float-Search)
-
-モーダルなど、大きい画面で検索画面が表示するプラグイン
-
-Hotkey 設定：
-- Floating Search: Search Obsidian Globally (With Last State) → Alt + F
-    - Floating Search を最後の状態で開く
-
 ### [Git](https://github.com/Vinzent03/obsidian-git)
 
 Gitで保管庫を管理するプラグイン
@@ -442,49 +365,46 @@ Gitで保管庫を管理するプラグイン
 方針：
 - mainブランチ1本
 - コミットは手動で行う
-    - Backup で一括操作
-    - Backup = Staging → Commit → Pull → Push
+    - Commit-and-sync で一括操作
+    - Commit-and-sync = Staging → Commit → Pull → Push
 - プッシュとプルは定期的に自動で行う
     - リポジトリの競合を可能な限り防ぐ
 - Obsidianの起動時は自動的にプル
 - Obsidianの終了方法はショートカット（Ctrl + Q）を使用
-    - `Git: Create backup and close`
-        - Backup
+    - `Git: Commit-and-sync and then close Obsidian`
+        - Commit-and-sync
         - Obsidianを閉じる
 
 デフォルトから変更した設定：
 
 Automatic：
-- Split automatic commit and push → ON
-    - 自動コミットとプッシュを分割
-- Vault commit interval (minites) → 0 (OFF)
-    - 自動で`git commit`を行う周期
-- Vault push interval (minutes) → 20
-    - 自動で`git push`を行う周期
-- Auto pull interval (minites) → 60
-    - 自動で`git pull`を行う周期
+- Auto commit-and-sync interval (minites) → 0 (OFF: Default)
+    - 自動で`commit-and-sync`を行う周期
+    - 自身の使い方に合わせて変更してください
+- Auto commit-and-sync after stopping file edits → ON
+	- 編集を止めてからX分後に`commit-and-sync`を行う
+	- 上記、interval設定が有効のとき動作します
 
-Backup：
-- Pull updates on startup → ON
-    - Obsidian起動時に最新の変更を取得
-- Push on backup → ON
-    - バックアップをプッシュする
-- Pull changes before push → ON
-    - プッシュ前にプルを行う
+Commit message：
+- List filenames affected by commit in the commit body → ON
+	- コミットメッセージの本文（Body）に、どのファイルが変更されたかのリストを自動で含めます
+
+Pull：
+- Pull on startup → ON
+	- Obsidian起動時にPullをする
+
+Miscellaneous：
+- Diff view style → Unified
+	- 差分ビューの表示方式
+- Show status bar → OFF
+	- ステータスバーの表示
+- Show branch status bar → OFF
+	- ブランチの表示
+	- main ブランチ一本運用のため不要
 
 Hotkey 設定：
 - Git: Create backup and close → Ctrl + Q
     - バックアップの作成とObsidianの終了
-
-### [Global Search and Replace](https://github.com/MahmoudFawzyKhalil/obsidian-global-search-and-replace)
-
-Obsidian 保管庫内全てのファイルでグローバル検索と置換を実行するプラグイン
-
-VSCodeの検索のように、横断検索して置換をするための機能になります。
-
-Hotkey 設定：
-- Global Search and Replace: Seach and Replace in all files → Alt + H
-    - 全ファイルの検索と置換
 
 ### [Image Toolkit](https://github.com/sissilab/obsidian-image-toolkit)
 
@@ -525,6 +445,21 @@ Typography：
 
 Mononoteを正しく動作させるには、「設定」→「エディター」→「常に新しいタブにフォーカス」を必ず有効にする必要があります。（制作者談）
 
+### [Omnisearch](https://github.com/scambier/obsidian-omnisearch)
+
+Obsidianの標準検索を大幅に強化するコミュニティプラグイン
+
+Hotkey 設定：
+- Omnisearch: Vault search → Alt + F
+
+Behavior：
+- Folders to downrank in search results → 00_templates, 00_view
+	- 指定フォルダ内のファイルを検索結果の下位に表示
+
+User Interface
+- Show embed references → 0
+	- 埋め込みの表示
+
 ### [Outliner](https://github.com/vslinko/obsidian-outliner)
 
 WorkflowyやRoamResearchのようなリストの操作感にするためのプラグイン
@@ -558,44 +493,6 @@ Hotkey 設定：
     - アウトライナー：リストとサブリストを下に移動
 - Outliner：Move list and sublists up → Alt + ↑
     - アウトライナー：リストとサブリストを上に移動
-
-### [Slash Commander](https://github.com/alephpiece/obsidian-slash-commander)
-
-Obsidian 用のカスタマイズ可能なスラッシュコマンドを追加するプラグイン
-
-スラッシュコマンドを使えるようにする便利系プラグインです。
-Embed Code File用のテンプレートをTemplaterに登録しているので、それをスラッシュコマンドで呼び出せるようにしています。
-その他、コマンドパレットから呼び出せるコマンドは全て登録可能なので、お好きに設定してください。
-
-### [Smart Connections](https://github.com/brianpetro/obsidian-smart-connections)
-
-Smart ConnectionsはAIの意味的類似性を使ってObsidianのノート間の関連性を自動で発見し、手動でのリンク作成や整理の手間を省くプラグイン
-
-Smart Connections
-- Connections view
-    - Exclude outlinks → ON
-    - Hide blocks in results → ON
-- Smart Environment
-    - Excluded folders
-        - 00_templates
-        - 02_view
-
-Smart Chat
-- Chat
-    - Language → 日本語
-
-### [Similar Notes](https://github.com/joybro/obsidian-similar-notes)
-
-AIの意味的類似性を使ってObsidianのノート間の関連性を自動で発見し、手動でのリンク作成や整理の手間を省くプラグイン
-Smart Connectionsにおいて、Ollamaを使用するためには課金しなくてはならなくなったのに伴って導入した代替
-Similar NotesとSmart Connectionsのどちらかを使う
-
-Index：
-- Exclude folders from indexing → 00_templates/ 02_view/
-	- インデックスから除外するフォルダ
-Display：
-- Show similar notes at the bottom of notes → OFF
-	- ノートの下部にSimilar Notesを表示
 
 ### [Style Settings](https://github.com/mgmeyers/obsidian-style-settings)
 
@@ -636,20 +533,6 @@ Minimal → Sidebars：
 - Hide help button → ON
     - ヘルプボタンを隠す
 
-### [TagFolder](https://github.com/vrtmrz/obsidian-tagfolder)
-
-タグをフォルダーのように表示するプラグイン
-
-デフォルトから変更した設定：
-- Behavior
-    - Disable narrowing down → ON
-        - 絞り込みの無効化。この機能を有効にすると、サブ構造を作る代わりに、関連するタグがタイトルとともに表示される。
-        - 個人的に階層はフラットな方が好きなので……ここはお好きに切り替えてください。
-- Filters
-    - Target Folders
-        - 01_data
-            - 00_templatesと02_viewを除くため
-
 ### [Templater](https://github.com/SilentVoid13/Templater)
 
 Templaterプラグインは、テンプレート言語を定義しています。
@@ -663,35 +546,11 @@ Templaterプラグインは、テンプレート言語を定義しています�
 - Trigger Templater on new file creation → ON
     - 新規ファイル作成でTemplaterをトリガーするか
 
-Template hotkeys
-- 00_templates/[[11_embed_code]].md
-    - [[11_embed_code]]は、Embed Code File プラグインのコード埋め込みテンプレート
+- 00_templates/02_task.md
+    - タスクノート用テンプレート
     - Hotkey設定：
-        - Templater: Insert 00_templates/[[11_embed_code]].md → Alt + C
-- 00_templates/[[02_literature]].md
-    - 文献ノート用テンプレート
-    - Hotkey設定：
-        - Templater: Create 00_templates/[[02_literature]].md → Ctrl + J
+        - Templater: Create 00_templates/02_task.md → Ctrl + M
 
 Folder templates
-- / ... 00_templates/[[01_note]].md
+- / ... 00_templates/01_note.md
     - 保管庫配下に、新規ノートを作成したときに適応するテンプレートの設定
-
-### [Various Complements](https://github.com/tadashi-aikawa/obsidian-various-complements-plugin)
-
-IDEの自動補完のように単語を補完するプラグイン
-
-「\[\[」と入力すること無く内部リンクを貼ることができるのですごく便利です。
-フロントマターやカスタム辞書、保管庫内を参照し文字列補間、現在のファイル内で文字列補間など多機能なので好みで調整してください。→ [ドキュメント](https://tadashi-aikawa.github.io/docs-obsidian-various-complements-plugin/)
-
-デフォルトから変更した設定：
-
-- Main
-    - Strategy
-        - Japanese
-    - Match Strategy
-        - partial
-- Current file complements
-    - Enable Current file complements → OFF
-- Internal link complement
-    - Exclude self internal link → ON

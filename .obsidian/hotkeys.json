@@ -23,44 +23,12 @@
       "key": "Q"
     }
   ],
-  "templater-obsidian:00_templates/11_embed_code.md": [
-    {
-      "modifiers": [
-        "Alt"
-      ],
-      "key": "C"
-    }
-  ],
   "editor:toggle-source": [
     {
       "modifiers": [
         "Mod"
       ],
       "key": "R"
-    }
-  ],
-  "float-search:search-obsidian-globally-state": [
-    {
-      "modifiers": [
-        "Alt"
-      ],
-      "key": "F"
-    }
-  ],
-  "global-search-and-replace:search-and-replace": [
-    {
-      "modifiers": [
-        "Alt"
-      ],
-      "key": "H"
-    }
-  ],
-  "templater-obsidian:create-00_templates/02_literature.md": [
-    {
-      "modifiers": [
-        "Mod"
-      ],
-      "key": "J"
     }
   ],
   "obsidian-minimal-settings:cycle-minimal-table-width": [
@@ -71,12 +39,28 @@
       "key": "T"
     }
   ],
-  "templater-obsidian:create-00_templates/03_task.md": [
+  "templater-obsidian:create-00_templates/02_task.md": [
     {
       "modifiers": [
         "Mod"
       ],
       "key": "M"
+    }
+  ],
+  "omnisearch:show-modal": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "F"
+    }
+  ],
+  "semantic-linker:open-semantic-search": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "D"
     }
   ]
 }

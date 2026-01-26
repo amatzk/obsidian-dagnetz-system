@@ -1,8 +1,13 @@
 ---
-created: <% tp.date.now("YYYY-MM-DD HH:mm:ss") %>
 tags:
   - note
 ---
+## 1.insights
+
+## 2.sources
+
+## 3.links
+
 <%*
 const CONFIG = {
   BASE_FOLDER: "01_data",
@@ -13,7 +18,7 @@ const CONFIG = {
   // 任意のタイトルを設定, 空欄("")の場合はデフォルトのファイル名を使用
   TITLE: "無題",
   // 日付表示位置："NONE" (なし), "PREFIX" (前方), "SUFFIX" (後方)
-  DATE_POSITION: "NONE"
+  DATE_POSITION: "PREFIX"
 }
 
 const createFolderIfNotExists = async (path) => {

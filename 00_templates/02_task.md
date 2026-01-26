@@ -1,9 +1,21 @@
 ---
-created: <% tp.date.now("YYYY-MM-DD HH:mm:ss") %>
 tags:
-  - literature
-source:
+  - task
+complete: false
 ---
+## 1.Output
+【定義】 1つだけ出力を決める。何を作るか、何の目的、目標を達成するか。
+
+## 2.Metric
+【定義】 基準軸を1つに絞る。作成、評価、速さ、質、など
+
+## 3.Input
+【定義】 参照する情報を1つに絞る。開く本は1冊のように。
+
+## 4.Deadline
+【定義】 終了条件を明確に決める。いつ、どんな条件で終わるか。
+- 時間：〇〇時間以内
+- 区切り：目的が達成されたら
 
 <%*
 const CONFIG = {
@@ -13,7 +25,7 @@ const CONFIG = {
   // ファイル名に付与する日付フォーマット
   FILE_DATE_FORMAT: "YYYY-MM-DD",
   // 任意のタイトルを設定, 空欄("")の場合はデフォルトのファイル名を使用
-  TITLE: "",
+  TITLE: "無題",
   // 日付表示位置："NONE" (なし), "PREFIX" (前方), "SUFFIX" (後方)
   DATE_POSITION: "PREFIX"
 }
