@@ -6,7 +6,7 @@ tags:
 ```base
 views:
   - type: table
-    name: imcomplete
+    name: incomplete
     filters:
       and:
         - file.path.contains("01_data")
