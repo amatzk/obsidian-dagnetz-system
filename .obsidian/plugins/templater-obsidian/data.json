@@ -29,7 +29,8 @@
   "syntax_highlighting": true,
   "syntax_highlighting_mobile": true,
   "enabled_templates_hotkeys": [
-    "00_templates/02_task.md"
+    "00_templates/02_task.md",
+    "00_templates/01_note.md"
   ],
   "startup_templates": [],
   "intellisense_render": 1

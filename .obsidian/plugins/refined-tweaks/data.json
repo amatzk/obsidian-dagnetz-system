@@ -1,0 +1,23 @@
+{
+  "preventUnpin": true,
+  "uniqueTab": true,
+  "pathViewDelay": 200,
+  "pathSettings": [
+    {
+      "path": "00_templates",
+      "viewMode": "source"
+    },
+    {
+      "path": "02_view",
+      "viewMode": "reading"
+    },
+    {
+      "path": "01_data",
+      "viewMode": "reading"
+    },
+    {
+      "path": "01_data/{{date:YYYY/MM/DD}}",
+      "viewMode": "live-preview"
+    }
+  ]
+}

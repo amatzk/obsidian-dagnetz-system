@@ -89,9 +89,19 @@
                   "icon": "lucide-git-fork",
                   "title": "10_dashboardのグラフ"
                 }
+              },
+              {
+                "id": "83d0bf11e75bd4dd",
+                "type": "leaf",
+                "state": {
+                  "type": "semantic-linker-view",
+                  "state": {},
+                  "icon": "sparkles",
+                  "title": "Semantic linker"
+                }
               }
             ],
-            "currentTab": 1
+            "currentTab": 2
           },
           {
             "id": "0e82ea010ed42152",
@@ -124,10 +134,10 @@
       },
       "left-ribbon": {
         "hiddenItems": {
-          "bases:Create new base": true,
+          "bases:新規ベースを作成": true,
           "workspaces:ワークスペースレイアウトを管理": true,
           "graph:グラフビューを開く": true,
-          "command-palette:コマンドパレットを開く": false,
+          "command-palette:コマンドパレットを開く": true,
           "templater-obsidian:Templater": true,
           "obsidian-git:Open Git source control": true,
           "omnisearch:Omnisearch": false,
@@ -135,7 +145,7 @@
         }
       },
       "active": "ddbbfb04f1eb3651",
-      "mtime": "2026-01-27T03:37:11+09:00"
+      "mtime": "2026-03-05T22:36:04+09:00"
     }
   },
   "active": "default"

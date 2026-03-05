@@ -242,7 +242,7 @@ tags:
 	],
 	"triggers": [],
 	"noteNameFormat": "{{date|date:YYYY-MM-DD}}_{{domain}}_{{title}}",
-	"path": "01_data/{{date|date:YYYY/MM/DD}}"
+	"path": "01_data/{{date|date:\"YYYY/MM/DD\"}}"
 }
 ```
 
@@ -436,14 +436,6 @@ Typography：
     - 行の高さ
 - Normal line witdh → 40
     - 通常の行の幅
-
-### [Mononote](https://github.com/czottmann/obsidian-mononote)
-
-各ノートがウィンドウペインごとに1つのタブのみを占有するようにするプラグイン
-
-ノートが既に開いている場合は、現在のタブで同じファイルを開くのではなく、既存のタブにフォーカスが当てられます。リンク、メニュー、ホットキーからノートを開く場合に有効です。
-
-Mononoteを正しく動作させるには、「設定」→「エディター」→「常に新しいタブにフォーカス」を必ず有効にする必要があります。（制作者談）
 
 ### [Omnisearch](https://github.com/scambier/obsidian-omnisearch)
 

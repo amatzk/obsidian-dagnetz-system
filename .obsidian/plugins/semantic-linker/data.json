@@ -18,7 +18,8 @@
   "safetyMargin": 0.95,
   "overlapRatio": 0.1,
   "reductionRatio": 0.8,
-  "parallelIndexingCount": 1,
+  "parallelIndexingCount": 4,
   "maxRetries": 5,
-  "showInlineSimilarNotes": true
+  "showInlineSimilarNotes": true,
+  "similaritySearchMode": "average-pooling"
 }
